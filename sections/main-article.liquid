@@ -1,0 +1,16 @@
+<article class="container article">
+  <header>
+    {%- if article.tags.size > 0 %}<span class="post__tag">{{ article.tags.first }}</span>{% endif -%}
+    <h1>{{ article.title }}</h1>
+    <p class="post__meta">{{ article.published_at | time_tag: format: 'date' }}{% if article.author != blank %} · {{ article.author }}{% endif %}</p>
+  </header>
+  {%- if article.image -%}
+    <div class="article__img">{{ article.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1400', sizes: '(max-width:900px) 100vw, 800px', alt: article.image.alt | default: article.title }}</div>
+  {%- endif -%}
+  <div class="rte article__body">{{ article.content }}</div>
+  <p class="article__back"><a class="link-arrow" href="{{ blog.url }}">← Back to {{ blog.title }}</a></p>
+</article>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":{{ article.title | json }},"datePublished":{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},"author":{"@type":"Person","name":{{ article.author | default: shop.name | json }} }{% if article.image %},"image":{{ article.image | image_url: width: 1200 | prepend: 'https:' | json }}{% endif %},"publisher":{"@type":"Organization","name":{{ shop.name | json }} }}
+</script>
+{% schema %}{ "name": "Article" }{% endschema %}

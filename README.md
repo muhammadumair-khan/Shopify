@@ -67,6 +67,22 @@ Products without their own chart use the default chart in **Theme settings → S
 - **Dispatch cut-off:** optional "Order within 3 hrs 12 mins for same-day dispatch" (Mon–Fri, UK time). Enable only if you truly dispatch same day.
 - Do not use timers that reset per visitor, fake "X people viewing" or invented stock levels. The DMCC Act 2024 and CMA treat these as unfair practices. Do not run a "sale ends" countdown and then repeat the same price.
 
+## All pages in this theme
+| Page | Template | Set up in Shopify admin |
+|---|---|---|
+| Home, Product, Collection, All collections, Cart, Search, 404 | `index`, `product`, `collection`, `list-collections`, `cart`, `search`, `404` | Automatic |
+| Generic page (Delivery, Returns, About, Size guide) | `page` | Pages → Add page, paste text from `page-content/` |
+| Contact us (form) | `page.contact` | Pages → Add page → Theme template **page.contact** |
+| FAQ (with Google FAQ data) | `page.faq` | Pages → Add page → Theme template **page.faq** |
+| Thank you | `page.thank-you` | Pages → Add page → Theme template **page.thank-you** |
+| Blog and Article | `blog`, `article` | Online Store → Blog posts |
+| Password / "Opening soon" | `password` + `layout/password` | Preferences → turn on password protection; edit the page text in the theme editor (choose *Password page* in the page selector) |
+| Customer accounts: log in, register, account, order, addresses, reset password, activate account | `customers/*` | Settings → Customer accounts → choose **Legacy customer accounts** (the new Shopify-hosted accounts don't use theme pages) |
+| Gift card | `gift_card.liquid` | Add a product of type gift card (Products → Add product → Gift card) |
+
+Not part of any theme (controlled by Shopify): checkout, order confirmation page, policy pages (Settings → Policies).
+Starter text for the content pages is in `page-content/`.
+
 ## Thank-you page (and the order confirmation)
 **Custom Thank-you page (in the theme):** Online Store → Pages → Add page → Theme template **page.thank-you**. Edit the message, the three "What happens next" steps, an optional discount code (create the same code under Discounts first) and a collection of products. Search engines are told to skip it (noindex). Use it as the landing page after newsletter or contact sign-ups, or link to it from email automations.
 

@@ -1,0 +1,19 @@
+{%- comment -%} Usage: render 'address-fields', form: form, id: address.id or 'new' {%- endcomment -%}
+{%- if form.errors -%}<div class="notice notice--err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+<div class="field-row">
+  <div class="field"><label for="a-first-{{ id }}">First name</label><input id="a-first-{{ id }}" name="address[first_name]" autocomplete="given-name" value="{{ form.first_name }}"></div>
+  <div class="field"><label for="a-last-{{ id }}">Last name</label><input id="a-last-{{ id }}" name="address[last_name]" autocomplete="family-name" value="{{ form.last_name }}"></div>
+</div>
+<div class="field"><label for="a-co-{{ id }}">Company</label><input id="a-co-{{ id }}" name="address[company]" autocomplete="organization" value="{{ form.company }}"></div>
+<div class="field"><label for="a-1-{{ id }}">Address line 1</label><input id="a-1-{{ id }}" name="address[address1]" autocomplete="address-line1" value="{{ form.address1 }}"></div>
+<div class="field"><label for="a-2-{{ id }}">Address line 2</label><input id="a-2-{{ id }}" name="address[address2]" autocomplete="address-line2" value="{{ form.address2 }}"></div>
+<div class="field-row">
+  <div class="field"><label for="a-city-{{ id }}">Town or city</label><input id="a-city-{{ id }}" name="address[city]" autocomplete="address-level2" value="{{ form.city }}"></div>
+  <div class="field"><label for="a-zip-{{ id }}">Postcode</label><input id="a-zip-{{ id }}" name="address[zip]" autocomplete="postal-code" value="{{ form.zip }}"></div>
+</div>
+<div class="field"><label for="a-country-{{ id }}">Country</label>
+  <select id="a-country-{{ id }}" name="address[country]" data-country data-default="{{ form.country | default: 'United Kingdom' }}" autocomplete="country-name">{{ all_country_option_tags }}</select></div>
+<div class="field" data-province-wrap hidden><label for="a-prov-{{ id }}">County or region</label>
+  <select id="a-prov-{{ id }}" name="address[province]" data-province data-default="{{ form.province }}" autocomplete="address-level1"></select></div>
+<div class="field"><label for="a-phone-{{ id }}">Phone</label><input id="a-phone-{{ id }}" type="tel" name="address[phone]" autocomplete="tel" value="{{ form.phone }}"></div>
+<label class="check"><input type="checkbox" name="address[default]" value="1"{% if form.default %} checked{% endif %}> Set as default address</label>

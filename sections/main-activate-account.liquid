@@ -1,0 +1,12 @@
+<div class="container auth">
+  <h1>Activate your account</h1>
+  <p>Create a password to finish setting up your account.</p>
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}<div class="notice notice--err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="field"><label for="x-pass">Password</label><input id="x-pass" type="password" name="customer[password]" autocomplete="new-password" required></div>
+    <div class="field"><label for="x-conf">Confirm password</label><input id="x-conf" type="password" name="customer[password_confirmation]" autocomplete="new-password" required></div>
+    <button class="btn btn--block" type="submit">Activate account</button>
+    <p class="auth__alt"><button class="link-arrow link-btn" type="submit" name="decline">Decline invitation</button></p>
+  {%- endform -%}
+</div>
+{% schema %}{ "name": "Activate account" }{% endschema %}

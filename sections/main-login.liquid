@@ -1,0 +1,28 @@
+<div class="container auth">
+  {%- form 'recover_customer_password' -%}{%- assign recover_ok = form.posted_successfully? -%}{%- endform -%}
+  <div id="login" data-auth-panel>
+    <h1>Log in</h1>
+    {%- if recover_ok %}<p class="notice notice--ok" role="status">We've emailed you a link to reset your password.</p>{% endif -%}
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}<div class="notice notice--err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field"><label for="l-email">Email</label><input id="l-email" type="email" name="customer[email]" autocomplete="email" required autofocus></div>
+      {%- if form.password_needed -%}
+        <div class="field"><label for="l-pass">Password</label><input id="l-pass" type="password" name="customer[password]" autocomplete="current-password" required></div>
+        <p><button type="button" class="link-arrow link-btn" data-show="recover">Forgot your password?</button></p>
+      {%- endif -%}
+      <button class="btn btn--block" type="submit">Log in</button>
+    {%- endform -%}
+    <p class="auth__alt">New here? <a href="{{ routes.account_register_url }}">Create an account</a></p>
+  </div>
+  <div id="recover" data-auth-panel hidden>
+    <h2>Reset your password</h2>
+    <p>We'll email you a link to set a new one.</p>
+    {%- form 'recover_customer_password' -%}
+      {%- if form.errors -%}<div class="notice notice--err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field"><label for="r-email">Email</label><input id="r-email" type="email" name="email" autocomplete="email" required></div>
+      <button class="btn btn--block" type="submit">Send reset link</button>
+    {%- endform -%}
+    <p class="auth__alt"><button type="button" class="link-arrow link-btn" data-show="login">Back to log in</button></p>
+  </div>
+</div>
+{% schema %}{ "name": "Login" }{% endschema %}

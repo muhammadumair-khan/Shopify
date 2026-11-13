@@ -134,6 +134,41 @@
     });
   });
 
+  // ---- Login / forgot-password panels
+  var panels = document.querySelectorAll('[data-auth-panel]');
+  if (panels.length) {
+    var showPanel = function (id) { panels.forEach(function (p) { p.hidden = p.id !== id; }); };
+    document.querySelectorAll('[data-show]').forEach(function (b) { b.addEventListener('click', function () { showPanel(b.dataset.show); }); });
+    var rec = document.getElementById('recover');
+    if (location.hash === '#recover' || (rec && rec.querySelector('.notice--err'))) showPanel('recover');
+  }
+
+  // ---- Password page: reopen the password box after a wrong password
+  var pwd = document.querySelector('[data-pw-details]');
+  if (pwd && pwd.querySelector('.notice--err')) pwd.open = true;
+
+  // ---- Confirm before deleting an address
+  document.querySelectorAll('form[data-confirm]').forEach(function (fm) {
+    fm.addEventListener('submit', function (e) { if (!window.confirm(fm.dataset.confirm)) e.preventDefault(); });
+  });
+
+  // ---- Country -> county/region selects (address forms)
+  document.querySelectorAll('[data-country]').forEach(function (cs) {
+    var wrap = cs.closest('form').querySelector('[data-province-wrap]'), ps = cs.closest('form').querySelector('[data-province]');
+    if (!wrap || !ps) return;
+    var first = true;
+    function sync() {
+      var opt = cs.options[cs.selectedIndex], list = [];
+      try { list = JSON.parse((opt && opt.getAttribute('data-provinces')) || '[]'); } catch (e) {}
+      ps.innerHTML = '';
+      list.forEach(function (pr) { var o = document.createElement('option'); o.value = pr[0]; o.textContent = pr[1]; ps.appendChild(o); });
+      if (first && ps.dataset['default']) ps.value = ps.dataset['default'];
+      first = false; wrap.hidden = list.length === 0;
+    }
+    if (cs.dataset['default']) { for (var i = 0; i < cs.options.length; i++) if (cs.options[i].value === cs.dataset['default'] || cs.options[i].text === cs.dataset['default']) { cs.selectedIndex = i; break; } }
+    cs.addEventListener('change', sync); sync();
+  });
+
   var f = document.querySelector('[data-product-form]');
   if (!f) return;
   var data = JSON.parse(f.querySelector('[data-variants]').textContent);

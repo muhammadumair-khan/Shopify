@@ -1,0 +1,22 @@
+{%- paginate blog.articles by section.settings.per_page -%}
+<div class="container section">
+  <h1>{{ blog.title }}</h1>
+  {%- if blog.all_tags.size > 0 -%}
+    <nav class="tags" aria-label="Topics">
+      <a href="{{ blog.url }}"{% unless current_tags %} class="is-active"{% endunless %}>All</a>
+      {%- for tag in blog.all_tags -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handleize }}"{% if current_tags contains tag %} class="is-active"{% endif %}>{{ tag }}</a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+  <div class="grid" style="--cols:3">
+    {%- for article in blog.articles -%}{% render 'article-card', article: article %}
+    {%- else -%}<p>No articles yet. Check back soon.</p>{%- endfor -%}
+  </div>
+  {%- render 'pagination', paginate: paginate -%}
+</div>
+{%- endpaginate -%}
+{% schema %}
+{ "name": "Blog",
+  "settings": [{ "type": "range", "id": "per_page", "min": 6, "max": 24, "step": 3, "label": "Articles per page", "default": 9 }] }
+{% endschema %}

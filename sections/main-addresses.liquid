@@ -1,0 +1,32 @@
+<div class="container acct">
+  <p><a class="link-arrow" href="{{ routes.account_url }}">← Back to my account</a></p>
+  <h1>My addresses</h1>
+  {%- paginate customer.addresses by 10 -%}
+    <div class="acct__grid acct__grid--even">
+      {%- for address in customer.addresses -%}
+        <div class="addr-card" {% if forloop.first %}data-first{% endif %}>
+          {%- if address == customer.default_address %}<span class="badge badge--static">Default</span>{% endif -%}
+          <div class="addr">{{ address | format_address }}</div>
+          <details class="addr-edit">
+            <summary class="link-arrow">Edit</summary>
+            {%- form 'customer_address', address -%}
+              {%- render 'address-fields', form: form, id: address.id -%}
+              <button class="btn" type="submit">Update address</button>
+            {%- endform -%}
+          </details>
+          <form method="post" action="/account/addresses/{{ address.id }}" data-confirm="Delete this address?">
+            <input type="hidden" name="_method" value="delete">
+            <button class="link-arrow link-btn" type="submit">Delete</button>
+          </form>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endpaginate -%}
+  <h2>Add a new address</h2>
+  {%- form 'customer_address', customer.new_address -%}
+    {%- render 'address-fields', form: form, id: 'new' -%}
+    <button class="btn" type="submit">Add address</button>
+  {%- endform -%}
+</div>
+{% schema %}{ "name": "Addresses" }{% endschema %}

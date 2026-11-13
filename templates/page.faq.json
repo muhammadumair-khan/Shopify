@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Orders placed before 2pm on a working day are dispatched the same day. UK delivery then takes 2–3 working days. You'll get a tracking link by email as soon as your order leaves us.</p>"
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "question": "How much is delivery?",
+            "answer": "<p>Delivery is free on orders over £50. Below that, the cost is shown at checkout before you pay.</p>"
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "question": "How do I find my size?",
+            "answer": "<p>Every product page has a size guide with body measurements in cm, plus a fit tag such as “runs small”. If you're between sizes, choose the larger one.</p>"
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "question": "Can I return or exchange an item?",
+            "answer": "<p>Yes. You have 30 days to return or exchange unworn items with their tags. Exchanging for another size is the quickest option. See our Returns page for how to start.</p>"
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "question": "What if my item is faulty?",
+            "answer": "<p>Please contact us with your order number and a photo. If an item is faulty we'll repair, replace or refund it. This does not affect your legal rights.</p>"
+          }
+        },
+        "q6": {
+          "type": "qa",
+          "settings": {
+            "question": "Are your clothes genuine?",
+            "answer": "<p>Add your own wording here that explains where your stock comes from, for example your supplier arrangements. Only state what you can prove.</p>"
+          }
+        },
+        "q7": {
+          "type": "qa",
+          "settings": {
+            "question": "How can I pay?",
+            "answer": "<p>We accept major credit and debit cards, Apple Pay, Google Pay, Shop Pay and PayPal. Prices include VAT.</p>"
+          }
+        },
+        "q8": {
+          "type": "qa",
+          "settings": {
+            "question": "How do I contact you?",
+            "answer": "<p>Use the form on our Contact page and we'll reply within 1 working day.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7",
+        "q8"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

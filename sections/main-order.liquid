@@ -1,0 +1,33 @@
+<div class="container acct">
+  <p><a class="link-arrow" href="{{ routes.account_url }}">← Back to my account</a></p>
+  <h1>Order {{ order.name }}</h1>
+  <p>Placed on {{ order.created_at | time_tag: format: 'date' }}</p>
+  {%- if order.cancelled %}<p class="notice notice--err">Order cancelled on {{ order.cancelled_at | time_tag: format: 'date' }}{% if order.cancel_reason_label != blank %} ({{ order.cancel_reason_label }}){% endif %}.</p>{% endif -%}
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Product</th><th>SKU</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead>
+    <tbody>
+      {%- for line_item in order.line_items -%}
+        <tr>
+          <td><a href="{{ line_item.product.url }}">{{ line_item.title }}</a>
+            {%- if line_item.fulfillment %}<br><small>Shipped {{ line_item.fulfillment.created_at | time_tag: format: 'date' }}{% if line_item.fulfillment.tracking_url %} · <a href="{{ line_item.fulfillment.tracking_url }}">Track {{ line_item.fulfillment.tracking_company }} {{ line_item.fulfillment.tracking_number }}</a>{% endif %}</small>{% endif -%}</td>
+          <td>{{ line_item.sku }}</td>
+          <td>{{ line_item.final_price | money }}</td>
+          <td>{{ line_item.quantity }}</td>
+          <td>{{ line_item.final_line_price | money }}</td>
+        </tr>
+      {%- endfor -%}
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4" scope="row">Subtotal</th><td>{{ order.line_items_subtotal_price | money }}</td></tr>
+      {%- for discount in order.cart_level_discount_applications -%}<tr><th colspan="4" scope="row">Discount ({{ discount.title }})</th><td>−{{ discount.total_allocated_amount | money }}</td></tr>{%- endfor -%}
+      {%- for shipping_method in order.shipping_methods -%}<tr><th colspan="4" scope="row">Delivery ({{ shipping_method.title }})</th><td>{{ shipping_method.price | money }}</td></tr>{%- endfor -%}
+      {%- for tax_line in order.tax_lines -%}<tr><th colspan="4" scope="row">{{ tax_line.title }}</th><td>{{ tax_line.price | money }}</td></tr>{%- endfor -%}
+      <tr class="tbl__total"><th colspan="4" scope="row">Total</th><td>{{ order.total_price | money }}</td></tr>
+    </tfoot>
+  </table></div>
+  <div class="acct__grid acct__grid--even">
+    <div><h2>Delivery address</h2><div class="addr">{{ order.shipping_address | format_address }}</div><p>Status: {{ order.fulfillment_status_label }}</p></div>
+    <div><h2>Billing address</h2><div class="addr">{{ order.billing_address | format_address }}</div><p>Payment: {{ order.financial_status_label }}</p></div>
+  </div>
+</div>
+{% schema %}{ "name": "Order" }{% endschema %}

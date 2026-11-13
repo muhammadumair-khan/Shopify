@@ -1,0 +1,14 @@
+<style>
+  :root {
+    --c-ink: {{ settings.color_ink }};
+    --c-bg: {{ settings.color_bg }};
+    --c-soft: {{ settings.color_soft }};
+    --c-accent: {{ settings.color_accent }};
+    --c-highlight: {{ settings.color_highlight }};
+    --font-body: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+    --font-head: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+    --page-width: {{ settings.page_width }}px;
+  }
+  {{ settings.body_font | font_face: font_display: 'swap' }}
+  {{ settings.heading_font | font_face: font_display: 'swap' }}
+</style>

@@ -1,0 +1,39 @@
+<div class="container contact">
+  <div class="contact__info">
+    <h1>{{ page.title }}</h1>
+    {%- if page.content != blank %}<div class="rte">{{ page.content }}</div>{% endif -%}
+    <dl class="contact__details">
+      {%- if section.settings.email != blank %}<dt>Email</dt><dd><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></dd>{% endif -%}
+      {%- if section.settings.phone != blank %}<dt>Phone</dt><dd>{{ section.settings.phone }}</dd>{% endif -%}
+      {%- if section.settings.hours != blank %}<dt>Opening hours</dt><dd>{{ section.settings.hours }}</dd>{% endif -%}
+      {%- if section.settings.address != blank %}<dt>Address</dt><dd>{{ section.settings.address | newline_to_br }}</dd>{% endif -%}
+      {%- if section.settings.reply_time != blank %}<dt>Reply time</dt><dd>{{ section.settings.reply_time }}</dd>{% endif -%}
+    </dl>
+  </div>
+  {%- form 'contact', class: 'contact__form' -%}
+    {%- if form.posted_successfully? -%}
+      <p class="notice notice--ok" role="status">Thanks, we've got your message. We usually reply within {{ section.settings.reply_time | default: '1 working day' }}.</p>
+    {%- else -%}
+      {%- if form.errors -%}<div class="notice notice--err" role="alert"><b>Please check:</b> {{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field"><label for="c-name">Name</label><input id="c-name" name="contact[name]" autocomplete="name" value="{{ form.name }}"></div>
+      <div class="field"><label for="c-email">Email</label><input id="c-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"></div>
+      <div class="field"><label for="c-topic">What is it about?</label>
+        <select id="c-topic" name="contact[Topic]">
+          <option>My order</option><option>Sizing and fit</option><option>Returns and exchanges</option><option>A faulty item</option><option>Something else</option>
+        </select></div>
+      <div class="field"><label for="c-order">Order number (optional)</label><input id="c-order" name="contact[Order number]" placeholder="#1001" value="{{ form.Order number }}"></div>
+      <div class="field"><label for="c-body">Message</label><textarea id="c-body" name="contact[body]" rows="6" required>{{ form.body }}</textarea></div>
+      <button class="btn btn--block" type="submit">Send message</button>
+    {%- endif -%}
+  {%- endform -%}
+</div>
+{% schema %}
+{ "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "email", "label": "Email shown", "default": "hello@example.co.uk" },
+    { "type": "text", "id": "phone", "label": "Phone (optional)" },
+    { "type": "text", "id": "hours", "label": "Opening hours", "default": "Mon–Fri, 9am–5pm" },
+    { "type": "textarea", "id": "address", "label": "Address (optional)", "info": "UK online sellers should show a contact address (registered office) somewhere on the site." },
+    { "type": "text", "id": "reply_time", "label": "Reply time", "default": "1 working day" }
+  ] }
+{% endschema %}

@@ -6,9 +6,11 @@
       {%- for link in linklists[section.settings.menu].links -%}
         <a href="{{ link.url }}"{% if link.title contains 'Sale' or link.title contains 'Deal' %} class="sale"{% endif %}>{{ link.title }}</a>
       {%- endfor -%}
+      {%- if shop.customer_accounts_enabled %}<a class="nav-account" href="{{ routes.account_url }}">{% if customer %}My account{% else %}Log in{% endif %}</a>{% endif -%}
     </nav>
     <div class="header__icons">
       <a href="{{ routes.search_url }}">{{ 'general.search' | t }}</a>
+      {%- if shop.customer_accounts_enabled %}<a class="hide-sm" href="{{ routes.account_url }}">{% if customer %}Account{% else %}Log in{% endif %}</a>{% endif -%}
       <a href="{{ routes.cart_url }}">{{ 'general.cart' | t }}<span class="cart-count">{{ cart.item_count }}</span></a>
     </div>
   </div>
