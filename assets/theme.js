@@ -60,7 +60,8 @@
       var c = g.querySelector('input:checked'); return c && c.value;
     });
     var v = data.find(function (x) { return x.options.every(function (o, i) { return o === chosen[i]; }); });
-    if (!v) return;
+    showMsg('');
+    if (!v) { idInput.value = ''; setLabel('Unavailable', true); stock(null); return; } // this combination does not exist: never add a wrong item
     idInput.value = v.id;
     setLabel(v.available ? btn.dataset.labelAdd : btn.dataset.labelSold, !v.available);
     stock(v);
@@ -83,21 +84,54 @@
     [btn, barBtn].forEach(function (b) { if (b) { b.textContent = text; b.disabled = !!disabled; } });
   }
 
-  // Add to cart without a page reload; falls back to a normal submit on any error
+  var msg = document.querySelector('[data-atc-msg]');
+  function showMsg(t) { if (msg) { msg.textContent = t; msg.hidden = !t; } }
+
+  // Confirmation toast with links, so the shopper sees that the item was added
+  var toast;
+  function showToast(text) {
+    if (!toast) {
+      toast = document.createElement('div'); toast.className = 'toast'; toast.setAttribute('role', 'status'); document.body.appendChild(toast);
+    }
+    toast.innerHTML = '<span></span> <a href="' + window.shopRoutes.cart + '">View cart</a> <a href="/checkout">Checkout</a>';
+    toast.firstChild.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('show'); }, 5000);
+  }
+
+  // Add to cart without a page reload. Network failures fall back to a normal form submit;
+  // stock errors (e.g. "only 2 available") are shown next to the button instead.
+  var busy = false;
   f.addEventListener('submit', function (e) {
     if (!window.fetch || !window.shopRoutes) return;
     e.preventDefault();
+    if (busy || !idInput.value) return;
+    busy = true; showMsg('');
     var original = btn.textContent;
     setLabel('Adding…', true);
+    var failedWith = null;
     fetch(window.shopRoutes.cartAdd + '.js', { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
-      .then(function (r) { if (!r.ok) throw new Error('add failed'); return r.json(); })
-      .then(function () { return fetch(window.shopRoutes.cart + '.js').then(function (r) { return r.json(); }); })
-      .then(function (cart) {
+      .then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) { failedWith = j.description || j.message || 'Could not add this item.'; throw new Error('rejected'); }
+          return j;
+        });
+      })
+      .then(function (item) {
+        return fetch(window.shopRoutes.cart + '.js').then(function (r) { return r.json(); }).then(function (cart) { return [item, cart]; });
+      })
+      .then(function (res) {
+        var cart = res[1];
         document.querySelectorAll('.cart-count').forEach(function (c) { c.textContent = cart.item_count; });
         setLabel('Added ✓', true);
-        setTimeout(function () { setLabel(original, false); }, 1500);
+        showToast(res[0].quantity + ' × ' + res[0].product_title + ' added to your cart');
+        setTimeout(function () { setLabel(original, false); busy = false; }, 1500);
       })
-      .catch(function () { f.submit(); });
+      .catch(function () {
+        busy = false;
+        if (failedWith) { showMsg(failedWith); setLabel(original, false); }
+        else { f.submit(); }
+      });
   });
 
   // Sticky add-to-cart bar on phones once the main button has scrolled out of view

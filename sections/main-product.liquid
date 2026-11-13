@@ -38,9 +38,11 @@
           </fieldset>
         {%- endfor -%}
       {%- endunless -%}
+      <div class="qty"><label for="qty">Quantity</label><input id="qty" type="number" name="quantity" value="1" min="1" max="99" inputmode="numeric"></div>
       <button class="btn btn--accent btn--block" type="submit" data-add data-label-sold="{{ 'product.sold_out' | t }}" data-label-add="{{ 'product.add' | t }}" {% unless current.available %}disabled{% endunless %}>
         {%- if current.available %}{{ 'product.add' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
       </button>
+      <p class="atc-msg" data-atc-msg role="alert" hidden></p>
     {%- endform -%}
 
     {%- if section.settings.show_cutoff %}<p class="cutoff" data-cutoff="{{ section.settings.cutoff_hour }}"></p>{% endif -%}
