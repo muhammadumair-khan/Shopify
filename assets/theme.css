@@ -363,3 +363,5 @@ h1,h2,h3,h4{word-spacing:.12em}
 .shopify-policy__body table{border-collapse:collapse;width:100%;display:block;overflow-x:auto}
 .shopify-policy__body th,.shopify-policy__body td{border:1px solid #ddd;padding:8px;text-align:left}
 .footer__policies{list-style:none;display:flex;flex-wrap:wrap;gap:6px 22px;margin:28px 0 0;padding:0;font-size:.85rem}
+.tile__ph{position:absolute;inset:0;background:repeating-linear-gradient(135deg,var(--c-ink) 0 14px,#1d1d1d 14px 28px)}
+.tile{text-decoration:none}

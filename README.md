@@ -32,6 +32,9 @@ a legal line in the footer, and fully editable homepage sections.
 - **Google rich results:** product data (price, stock, ratings if a reviews app provides them) is added automatically.
 - **Reviews:** install a reviews app (e.g. Judge.me); it plugs into the star-rating and structured data slots.
 
+## Make "Shop by category" work
+The Men / Women / Kids tiles on the home page link to the collection you pick for each tile in the theme editor (Collection tiles section → each Tile → Collection). If you leave it empty, the tile looks for a collection whose handle matches its label (Men → `/collections/men`, Women → `/collections/women`, Kids → `/collections/kids`) and uses that collection's image, or the photo of its first product. So the quickest setup is: create collections called **Men**, **Women** and **Kids** (Products → Collections) and add products to them. Until then the tiles link to all products.
+
 ## Make the "Shop the deals" buttons work
 The hero, promo strip and flash-sale banner send shoppers to a collection with the handle **sale** (if it has products), otherwise to **All products**. To set it up: Products → Collections → Create collection → title **Sale**, type **Automated**, condition **Compare-at price is greater than 0**. Or set an explicit link in each section in the theme editor. The "Hot deals" section also falls back to the Sale collection, then all products, until you pick one.
 
