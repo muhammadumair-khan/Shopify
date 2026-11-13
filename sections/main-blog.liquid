@@ -9,7 +9,7 @@
       {%- endfor -%}
     </nav>
   {%- endif -%}
-  <div class="grid" style="--cols:3">
+  <div class="grid grid--posts" style="--cols:3">
     {%- for article in blog.articles -%}{% render 'article-card', article: article %}
     {%- else -%}<p>No articles yet. Check back soon.</p>{%- endfor -%}
   </div>

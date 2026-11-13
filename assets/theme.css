@@ -351,3 +351,6 @@ h1,h2,h3,h4{word-spacing:.12em}
 @media(min-width:901px){.nav-account{display:none}}
 @media(max-width:520px){.field-row{grid-template-columns:1fr}}
 @media print{.gc .btn,.header,.footer{display:none}}
+.acct__grid>*,.contact>*,.acct{min-width:0}
+.tbl-wrap{max-width:100%}
+@media(max-width:640px){.grid--posts{grid-template-columns:1fr}}
