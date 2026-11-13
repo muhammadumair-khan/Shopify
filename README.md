@@ -33,6 +33,12 @@ a legal line in the footer, and fully editable homepage sections.
 - **Google rich results:** product data (price, stock, ratings if a reviews app provides them) is added automatically.
 - **Reviews:** install a reviews app (e.g. Judge.me); it plugs into the star-rating and structured data slots.
 
+## Eye-catching home page and product cards
+- **Hero slider** (theme editor → Hero slider): up to 5 slides, each with a photo *or* a short silent video, heading, text, button and sticker. Slides swipe on phones, change automatically every few seconds (set 0 to stop), pause when touched, and the video plays only while its slide shows. Use bright, high-quality photos about 1400 px wide; the first slide loads first, so keep it light.
+- **Scrolling strip** (Scrolling strip section): moving offers such as "Free delivery over £50". Choose red, black or yellow; it pauses on hover and stays still for people who prefer reduced motion.
+- **Quick "+" add to cart** on product cards: one tap adds single-option products; products with sizes open a small size picker (sold-out sizes are greyed). Turn it off in Theme settings → Product cards.
+- **"New" and "Best seller" tags:** add the product tag `new` or `best-seller` in Shopify admin (Products → Tags, or the *Tags* column in the bulk-upload sheet). The tag shows on cards and on the product page. Remove the tag when it stops being true (a "New" product shouldn't stay new for months).
+
 ## Make "Shop by category" work
 The Men / Women / Kids tiles on the home page link to the collection you pick for each tile in the theme editor (Collection tiles section → each Tile → Collection). If you leave it empty, the tile looks for a collection whose handle matches its label (Men → `/collections/men`, Women → `/collections/women`, Kids → `/collections/kids`) and uses that collection's image, or the photo of its first product. So the quickest setup is: create collections called **Men**, **Women** and **Kids** (Products → Collections) and add products to them. Until then the tiles link to all products.
 

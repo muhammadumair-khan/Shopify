@@ -27,6 +27,8 @@
     <dialog class="lightbox" data-lightbox aria-label="Zoomed photo"><button type="button" class="lightbox__close" data-lb-close aria-label="Close">&times;</button><img alt="" data-lb-img></dialog>
   </div>
   <div class="pdp__info">
+    {%- for t in product.tags -%}{%- assign tl = t | downcase -%}{%- if tl == 'best-seller' or tl == 'best seller' or tl == 'bestseller' -%}{%- assign pdp_tag = 'Best seller' -%}{%- elsif tl == 'new' and pdp_tag == blank -%}{%- assign pdp_tag = 'New' -%}{%- endif -%}{%- endfor -%}
+    {%- if settings.show_product_tags and pdp_tag != blank %}<span class="badge badge--tag badge--inline{% if pdp_tag == 'Best seller' %} badge--best{% endif %}">{{ pdp_tag }}</span>{% endif -%}
     {%- if product.vendor != blank %}<div class="card__vendor">{{ product.vendor }}</div>{% endif -%}
     <h1 style="font-size:clamp(1.8rem,3vw,2.6rem)">{{ product.title }}</h1>
     <div class="pdp__price" data-price>{% render 'variant-price', variant: current %}</div>

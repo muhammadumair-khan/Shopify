@@ -1,0 +1,28 @@
+{%- assign items = section.blocks | where: 'type', 'item' -%}
+{%- if items.size > 0 -%}
+<div class="marquee marquee--{{ section.settings.style }}" style="--speed:{{ section.settings.speed }}s" role="region" aria-label="Offers">
+  <div class="marquee__track">
+    {%- for round in (1..2) -%}
+      <ul class="marquee__list"{% if round == 2 %} aria-hidden="true"{% endif %}>
+        {%- for block in items -%}
+          <li {% if round == 1 %}{{ block.shopify_attributes }}{% endif %}>{{ block.settings.text }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+{% schema %}
+{ "name": "Scrolling strip",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Colours", "default": "ink", "options": [
+      { "value": "ink", "label": "Black with yellow text" }, { "value": "accent", "label": "Red with white text" }, { "value": "highlight", "label": "Yellow with black text" }] },
+    { "type": "range", "id": "speed", "min": 10, "max": 60, "step": 5, "unit": "s", "label": "Time for one loop", "default": 30 }
+  ],
+  "blocks": [{ "type": "item", "name": "Message", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Free delivery over £50" }] }],
+  "presets": [{ "name": "Scrolling strip", "blocks": [
+    { "type": "item", "settings": { "text": "Free delivery over £50" } },
+    { "type": "item", "settings": { "text": "Up to 70% off retail" } },
+    { "type": "item", "settings": { "text": "New drops every week" } },
+    { "type": "item", "settings": { "text": "30-day returns" } }] }] }
+{% endschema %}

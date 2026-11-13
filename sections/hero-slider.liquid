@@ -1,0 +1,52 @@
+{%- assign slides = section.blocks | where: 'type', 'slide' -%}
+{%- assign deals_url = routes.all_products_collection_url -%}
+{%- if collections['sale'].products_count > 0 %}{% assign deals_url = collections['sale'].url %}{% endif -%}
+<section class="hs" data-slider data-autoplay="{{ section.settings.autoplay }}" aria-roledescription="carousel" aria-label="Featured offers">
+  <div class="hs__track" data-slider-track tabindex="0">
+    {%- for block in slides -%}
+      {%- assign link = block.settings.button_link | default: deals_url -%}
+      <div class="hs__slide" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ slides.size }}" {{ block.shopify_attributes }}>
+        <div class="hero__inner">
+          <div class="hero__copy">
+            {%- if block.settings.eyebrow != blank %}<span class="hero__eyebrow">{{ block.settings.eyebrow }}</span>{% endif -%}
+            <h2 class="hs__title">{{ block.settings.heading }}</h2>
+            <p>{{ block.settings.text }}</p>
+            {%- if block.settings.button_label != blank %}<a class="btn btn--accent" href="{{ link }}">{{ block.settings.button_label }}</a>{% endif -%}
+          </div>
+          <div class="hero__img">
+            {%- if block.settings.video != blank -%}
+              {{ block.settings.video | video_tag: image_size: '1000x', autoplay: false, loop: true, muted: true, controls: false, playsinline: true, class: 'hs__video', preload: 'none' }}
+            {%- elsif block.settings.image != blank -%}
+              {%- if forloop.first -%}{{ block.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1400', sizes: '(max-width:900px) 100vw, 50vw', alt: block.settings.heading | strip_html }}
+              {%- else -%}{{ block.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,900,1400', sizes: '(max-width:900px) 100vw, 50vw', alt: block.settings.heading | strip_html }}{%- endif -%}
+            {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag }}{%- endif -%}
+          </div>
+        </div>
+        {%- if block.settings.sticker_big != blank %}<div class="hero__sticker"><div>{{ block.settings.sticker_small }}<b>{{ block.settings.sticker_big }}</b></div></div>{% endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- if slides.size > 1 -%}
+    <div class="hs__ctrl">
+      <button type="button" class="hs__arrow" data-slider-prev aria-label="Previous slide">&#8249;</button>
+      <div class="hs__dots">{%- for block in slides -%}<button type="button" class="hs__dot{% if forloop.first %} is-active{% endif %}" data-slider-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>{%- endfor -%}</div>
+      <button type="button" class="hs__arrow" data-slider-next aria-label="Next slide">&#8250;</button>
+    </div>
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "Hero slider",
+  "settings": [{ "type": "range", "id": "autoplay", "min": 0, "max": 10, "step": 1, "unit": "s", "label": "Change slide every (0 = don't)", "default": 6 }],
+  "blocks": [{ "type": "slide", "name": "Slide", "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "New drop · Limited stock" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Dress sharp. Pay less." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Top-brand clothing at up to 70% off retail." },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Shop the deals" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Empty = your Sale collection, or all products." },
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "video", "id": "video", "label": "Video (optional, replaces the photo)", "info": "Upload a short silent clip (under 10 s, small file). It plays only while the slide is showing." },
+    { "type": "text", "id": "sticker_small", "label": "Sticker – small text", "default": "Up to" },
+    { "type": "text", "id": "sticker_big", "label": "Sticker – big text", "default": "70% off" }] }],
+  "max_blocks": 5,
+  "presets": [{ "name": "Hero slider", "blocks": [{ "type": "slide" }, { "type": "slide", "settings": { "eyebrow": "Winter coats", "heading": "Wrap up for less.", "text": "Jackets and coats from £29.", "button_label": "Shop coats", "sticker_small": "From", "sticker_big": "£29" } }] }] }
+{% endschema %}

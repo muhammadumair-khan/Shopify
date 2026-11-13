@@ -92,6 +92,24 @@
     ]
   },
   {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "quick_add",
+        "label": "Show quick \u201c+\u201d add-to-cart on product cards",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_product_tags",
+        "label": "Show \u201cNew\u201d and \u201cBest seller\u201d tags",
+        "info": "Add the product tag new or best-seller in Shopify admin (Products \u2192 Tags).",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Delivery estimate",
     "settings": [
       {

@@ -45,6 +45,96 @@
     document.querySelectorAll('[data-sg-open]').forEach(function (b) { b.hidden = true; });
   }
 
+  // ---- Shared: confirmation toast and cart count
+  var toast;
+  function showToast(text, isError) {
+    if (!toast) {
+      toast = document.createElement('div'); toast.className = 'toast'; toast.setAttribute('role', 'status'); document.body.appendChild(toast);
+    }
+    toast.innerHTML = '<span></span>' + (isError ? '' : ' <a href="' + window.shopRoutes.cart + '">View cart</a> <a href="/checkout">Checkout</a>');
+    toast.firstChild.textContent = text;
+    toast.classList.toggle('toast--err', !!isError);
+    toast.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('show'); }, 5000);
+  }
+  function refreshCount() {
+    return fetch(window.shopRoutes.cart + '.js').then(function (r) { return r.json(); }).then(function (cart) {
+      document.querySelectorAll('.cart-count').forEach(function (c) { c.textContent = cart.item_count; });
+      return cart;
+    });
+  }
+
+  // ---- Hero slider: swipe, arrows, dots, optional autoplay and video (only the visible slide plays)
+  document.querySelectorAll('[data-slider]').forEach(function (sl) {
+    var track = sl.querySelector('[data-slider-track]'), slides = [].slice.call(track.querySelectorAll('[data-slide]')),
+        dots = [].slice.call(sl.querySelectorAll('[data-slider-dot]')), cur = 0, timer, scrollTimer, paused = false, visible = true,
+        secs = +sl.dataset.autoplay || 0,
+        reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function playVideos(i) {
+      slides.forEach(function (s, k) {
+        var v = s.querySelector('video'); if (!v) return;
+        if (k === i && !reduce) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+      });
+    }
+    function set(i) {
+      cur = i;
+      dots.forEach(function (d, k) { d.classList.toggle('is-active', k === i); if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+      playVideos(i);
+    }
+    function go(i) {
+      i = (i + slides.length) % slides.length;
+      track.scrollTo({ left: i * track.clientWidth, behavior: reduce ? 'auto' : 'smooth' }); set(i);
+    }
+    track.addEventListener('scroll', function () {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () { var i = Math.round(track.scrollLeft / (track.clientWidth || 1)); if (i !== cur) set(i); }, 80);
+    }, { passive: true });
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { go(k); }); });
+    var pv = sl.querySelector('[data-slider-prev]'), nx = sl.querySelector('[data-slider-next]');
+    if (pv) pv.addEventListener('click', function () { go(cur - 1); });
+    if (nx) nx.addEventListener('click', function () { go(cur + 1); });
+    track.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } });
+    ['mouseenter', 'focusin', 'touchstart'].forEach(function (ev) { sl.addEventListener(ev, function () { paused = true; }, { passive: true }); });
+    ['mouseleave', 'focusout', 'touchend'].forEach(function (ev) { sl.addEventListener(ev, function () { paused = false; }, { passive: true }); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(sl);
+    if (secs > 0 && slides.length > 1 && !reduce) timer = setInterval(function () { if (!paused && visible && !document.hidden) go(cur + 1); }, secs * 1000);
+    set(0);
+  });
+  // ---- End hero slider
+
+  // ---- Quick add on product cards: "+" adds single-variant products; others open a size picker
+  function closeQa(except) {
+    document.querySelectorAll('[data-qa-panel]:not([hidden])').forEach(function (p) {
+      if (p === except) return;
+      p.hidden = true; var b = p.parentNode.querySelector('[data-qa-open]'); if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var opener = e.target.closest('[data-qa-open]'), add = e.target.closest('[data-qa-add]');
+    if (opener) {
+      var panel = opener.parentNode.querySelector('[data-qa-panel]'), willOpen = panel.hidden;
+      closeQa(); panel.hidden = !willOpen; opener.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var first = panel.querySelector('button:not([disabled])'); if (first) first.focus(); }
+      return;
+    }
+    if (add) {
+      if (add.disabled || !window.fetch || !window.shopRoutes) return;
+      var label = add.textContent; add.disabled = true;
+      fetch(window.shopRoutes.cartAdd + '.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: +add.dataset.qaAdd, quantity: 1 }) })
+        .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.description || j.message || 'Could not add this item.'); return j; }); })
+        .then(function (item) { return refreshCount().then(function () { return item; }); })
+        .then(function (item) {
+          showToast('1 × ' + (item.product_title || add.dataset.title) + (item.variant_title ? ' (' + item.variant_title + ')' : '') + ' added to your cart');
+          closeQa(); add.textContent = '✓'; setTimeout(function () { add.textContent = label; add.disabled = false; }, 1200);
+        })
+        .catch(function (err) { showToast(err.message || 'Could not add this item.', true); add.disabled = false; });
+      return;
+    }
+    if (!e.target.closest('[data-qa-panel]')) closeQa();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeQa(); });
+  // ---- End quick add
+
   // ---- Product gallery: swipe (scroll-snap), arrows, thumbnails, tap-to-zoom, jump to variant photo
   var galApi = null, gal = document.querySelector('[data-gallery]');
   if (gal) {
@@ -213,18 +303,6 @@
 
   var msg = document.querySelector('[data-atc-msg]');
   function showMsg(t) { if (msg) { msg.textContent = t; msg.hidden = !t; } }
-
-  // Confirmation toast with links, so the shopper sees that the item was added
-  var toast;
-  function showToast(text) {
-    if (!toast) {
-      toast = document.createElement('div'); toast.className = 'toast'; toast.setAttribute('role', 'status'); document.body.appendChild(toast);
-    }
-    toast.innerHTML = '<span></span> <a href="' + window.shopRoutes.cart + '">View cart</a> <a href="/checkout">Checkout</a>';
-    toast.firstChild.textContent = text;
-    toast.classList.add('show');
-    clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('show'); }, 5000);
-  }
 
   // Add to cart without a page reload. Network failures fall back to a normal form submit;
   // stock errors (e.g. "only 2 available") are shown next to the button instead.

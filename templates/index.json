@@ -1,7 +1,50 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-banner"
+      "type": "hero-slider",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "New drop · Limited stock",
+            "heading": "Dress sharp. Pay less.",
+            "text": "Top-brand clothing at up to 70% off retail. Fresh deals every week.",
+            "button_label": "Shop the deals",
+            "sticker_small": "Up to",
+            "sticker_big": "70% off"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Winter coats",
+            "heading": "Wrap up for less.",
+            "text": "Jackets, coats and hoodies from £29. Free delivery over £50.",
+            "button_label": "Shop coats",
+            "sticker_small": "From",
+            "sticker_big": "£29"
+          }
+        },
+        "s3": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Free exchanges",
+            "heading": "Wrong size? Swap it.",
+            "text": "30-day returns and exchanges on every order.",
+            "button_label": "See how it works",
+            "sticker_small": "30",
+            "sticker_big": "days"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "autoplay": 6
+      }
     },
     "props": {
       "type": "value-props",
@@ -17,7 +60,7 @@
           "type": "prop",
           "settings": {
             "title": "Free delivery",
-            "text": "On orders over \u00a350"
+            "text": "On orders over £50"
           }
         },
         "c": {
@@ -91,10 +134,50 @@
     },
     "flash": {
       "type": "countdown-banner"
+    },
+    "strip": {
+      "type": "marquee",
+      "blocks": {
+        "a": {
+          "type": "item",
+          "settings": {
+            "text": "Free delivery over £50"
+          }
+        },
+        "b": {
+          "type": "item",
+          "settings": {
+            "text": "Up to 70% off retail"
+          }
+        },
+        "c": {
+          "type": "item",
+          "settings": {
+            "text": "New drops every week"
+          }
+        },
+        "d": {
+          "type": "item",
+          "settings": {
+            "text": "30-day returns"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "settings": {
+        "style": "accent",
+        "speed": 30
+      }
     }
   },
   "order": [
     "hero",
+    "strip",
     "props",
     "deals",
     "tiles",
