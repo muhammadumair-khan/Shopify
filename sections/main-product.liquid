@@ -1,10 +1,30 @@
 {%- assign current = product.selected_or_first_available_variant -%}
 <div class="container pdp">
-  <div class="pdp__gallery">
-    {%- for image in product.images -%}
-      {%- if forloop.first -%}{{ image | image_url: width: 1200 | image_tag: loading: 'eager', widths: '600,900,1200', sizes: '(max-width:900px) 100vw, 40vw' }}
-      {%- else -%}{{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(max-width:900px) 100vw, 40vw' }}{%- endif -%}
-    {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endfor -%}
+  <div class="gal" data-gallery>
+    <div class="gal__main">
+      <div class="gal__track" data-gal-track tabindex="0" aria-label="Product photos">
+        {%- for image in product.images -%}
+          {%- assign alt = image.alt | default: product.title -%}
+          <div class="gal__slide" data-image-id="{{ image.id }}" data-full="{{ image | image_url: width: 2000 }}">
+            {%- if forloop.first -%}{{ image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200', sizes: '(max-width:900px) 100vw, 45vw', alt: alt }}
+            {%- else -%}{{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(max-width:900px) 100vw, 45vw', alt: alt }}{%- endif -%}
+          </div>
+        {%- else -%}<div class="gal__slide">{{ 'product-1' | placeholder_svg_tag }}</div>{%- endfor -%}
+      </div>
+      {%- if product.images.size > 1 -%}
+        <button class="gal__arrow gal__arrow--prev" type="button" data-gal-prev aria-label="Previous photo">&#8249;</button>
+        <button class="gal__arrow gal__arrow--next" type="button" data-gal-next aria-label="Next photo">&#8250;</button>
+        <span class="gal__count" data-gal-count aria-live="polite">1 / {{ product.images.size }}</span>
+      {%- endif -%}
+    </div>
+    {%- if product.images.size > 1 -%}
+      <div class="gal__thumbs" data-gal-thumbs>
+        {%- for image in product.images -%}
+          <button type="button" class="gal__thumb{% if forloop.first %} is-active{% endif %}" data-gal-thumb="{{ forloop.index0 }}" aria-label="Show photo {{ forloop.index }}">{{ image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '160', sizes: '64px', alt: '' }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <dialog class="lightbox" data-lightbox aria-label="Zoomed photo"><button type="button" class="lightbox__close" data-lb-close aria-label="Close">&times;</button><img alt="" data-lb-img></dialog>
   </div>
   <div class="pdp__info">
     {%- if product.vendor != blank %}<div class="card__vendor">{{ product.vendor }}</div>{% endif -%}
@@ -16,7 +36,7 @@
     {%- unless product.has_only_default_variant %}{% render 'size-guide' %}{% endunless -%}
     {%- form 'product', product, id: 'product-form', data-product-form: '' -%}
       <script type="application/json" data-variants>
-        [{% for v in product.variants %}{"id":{{ v.id }},"available":{{ v.available }},"options":{{ v.options | json }},"qty":{{ v.inventory_quantity | default: 0 }},"managed":{% if v.inventory_management == 'shopify' %}true{% else %}false{% endif %},"price_html":{% capture ph %}{% render 'variant-price', variant: v %}{% endcapture %}{{ ph | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+        [{% for v in product.variants %}{"id":{{ v.id }},"available":{{ v.available }},"options":{{ v.options | json }},"image":{% if v.featured_image %}{{ v.featured_image.id }}{% else %}null{% endif %},"qty":{{ v.inventory_quantity | default: 0 }},"managed":{% if v.inventory_management == 'shopify' %}true{% else %}false{% endif %},"price_html":{% capture ph %}{% render 'variant-price', variant: v %}{% endcapture %}{{ ph | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
       </script>
       <input type="hidden" name="id" value="{{ current.id }}">
       {%- unless product.has_only_default_variant -%}
@@ -43,29 +63,131 @@
         {%- if current.available %}{{ 'product.add' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
       </button>
       <p class="atc-msg" data-atc-msg role="alert" hidden></p>
+      {%- if section.settings.show_express %}<div class="express">{{ form | payment_button }}</div>{% endif -%}
     {%- endform -%}
+
+    {%- if settings.delivery_estimate and section.settings.show_delivery -%}
+      <p class="deliv" data-delivery data-dl-cutoff="{{ settings.dispatch_cutoff_hour }}" data-min="{{ settings.delivery_min_days }}" data-max="{{ settings.delivery_max_days }}" data-holidays="{{ settings.bank_holidays | strip_newlines | escape }}"><b>Estimated delivery</b> <span data-delivery-text>{{ settings.delivery_min_days }}–{{ settings.delivery_max_days }} working days after dispatch</span></p>
+    {%- endif -%}
 
     {%- if section.settings.show_cutoff %}<p class="cutoff" data-cutoff="{{ section.settings.cutoff_hour }}"></p>{% endif -%}
     <ul class="trust">
-      {%- for block in section.blocks -%}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{%- endfor -%}
+      {%- for block in section.blocks -%}{%- if block.type == 'trust' -%}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{%- endif -%}{%- endfor -%}
     </ul>
-    <div class="pdp__desc rte">{{ product.description }}<p><small>{{ 'product.size_guide' | t }}</small></p></div>
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <div class="pay"><span class="pay__label">Secure checkout</span>
+        <ul class="pay__icons">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'pay__icon' }}</li>{% endfor %}</ul>
+      </div>
+    {%- endif -%}
+    <div class="accs">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'accordion' -%}
+          {%- if block.settings.use_description and product.description == blank -%}{%- continue -%}{%- endif -%}
+          <details class="acc"{% if block.settings.open %} open{% endif %} {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.title }}</summary>
+            <div class="acc__body rte">{% if block.settings.use_description %}{{ product.description }}{% else %}{{ block.settings.content }}{% endif %}</div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
   </div>
 </div>
 <div class="atc-bar" data-atc-bar hidden>
   <div class="atc-bar__price" data-bar-price>{{ current.price | money }}</div>
   <button class="btn btn--accent" type="button" data-bar-btn>{% if current.available %}{{ 'product.add' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</button>
 </div>
+<script type="application/ld+json">{{ product | structured_data }}</script>
 {% schema %}
-{ "name": "Product",
+{
+  "name": "Product",
   "settings": [
-    { "type": "checkbox", "id": "show_countdown", "label": "Show sale countdown", "default": true },
-    { "type": "checkbox", "id": "show_cutoff", "label": "Show “order within… for same-day dispatch”", "default": false },
-    { "type": "range", "id": "cutoff_hour", "min": 8, "max": 20, "step": 1, "label": "Dispatch cut-off (UK time, 24h)", "info": "Mon–Fri. Only turn on if you truly dispatch same day.", "default": 14 }
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show sale countdown",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery",
+      "label": "Show delivery estimate",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_express",
+      "label": "Show express checkout buttons (Shop Pay, Apple Pay, Google Pay…)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cutoff",
+      "label": "Show “order within… for same-day dispatch”",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "cutoff_hour",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "label": "Dispatch cut-off for the line above (UK time, 24h)",
+      "default": 14
+    }
   ],
-  "blocks": [{ "type": "trust", "name": "Trust line", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Free delivery over £50" }] }],
-  "presets": [{ "name": "Product", "blocks": [
-    { "type": "trust", "settings": { "text": "Free delivery over £50" } },
-    { "type": "trust", "settings": { "text": "30-day easy returns" } },
-    { "type": "trust", "settings": { "text": "100% authentic, brand-name styles" } }] }] }
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust line",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free delivery over £50"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Collapsible section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Product details"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_description",
+          "label": "Show the product description",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text (when not showing the description)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product"
+    }
+  ]
+}
 {% endschema %}

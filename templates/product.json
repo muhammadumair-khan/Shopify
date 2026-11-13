@@ -1,1 +1,64 @@
-{ "sections": { "main": { "type": "main-product" } }, "order": ["main"] }
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "text": "Free delivery over £50"
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "text": "30-day returns and exchanges"
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "text": "100% authentic, brand-name styles"
+          }
+        },
+        "a1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Product details",
+            "use_description": true,
+            "open": true
+          }
+        },
+        "a2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Fabric and care",
+            "content": "<p>Add the fabric composition and washing instructions here, for example: 80% cotton, 20% polyester. Machine wash at 30°C.</p>"
+          }
+        },
+        "a3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Delivery and returns",
+            "content": "<p><strong>Delivery:</strong> free on orders over £50. See the delivery estimate above.</p><p><strong>Returns and exchanges:</strong> 30 days, items unworn with tags. See our returns policy for details. This does not affect your statutory rights.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "a1",
+        "a2",
+        "a3"
+      ]
+    },
+    "recs": {
+      "type": "product-recommendations"
+    }
+  },
+  "order": [
+    "main",
+    "recs"
+  ]
+}

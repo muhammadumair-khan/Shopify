@@ -1,0 +1,20 @@
+<div class="recs" data-recs data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=related">
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <section class="section section--soft">
+      <div class="container">
+        <div class="section__head"><h2>{{ section.settings.title }}</h2></div>
+        <div class="grid" style="--cols:4">
+          {%- for p in recommendations.products limit: section.settings.limit -%}{% render 'product-card', product: p %}{%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+</div>
+{% schema %}
+{ "name": "Product recommendations",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "You may also like" },
+    { "type": "range", "id": "limit", "min": 2, "max": 8, "step": 2, "label": "Products", "default": 4 }
+  ],
+  "presets": [{ "name": "Product recommendations" }] }
+{% endschema %}

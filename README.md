@@ -20,6 +20,15 @@ a legal line in the footer, and fully editable homepage sections.
 - **Payments:** enable Shopify Payments (GBP), Apple Pay, Google Pay, Shop Pay, PayPal, and Klarna/Clearpay if wanted.
 - **Footer legal line:** your registered company name and number, VAT number and registered address (required on UK business websites).
 
+## Product page features
+- **Photo gallery:** swipe on phones, arrows and thumbnails on desktop, tap to zoom. If a variant (e.g. a colour) has its own photo assigned in Shopify (Products → variant → pick image), the gallery jumps to it.
+- **Express checkout:** Shop Pay, Apple Pay, Google Pay and PayPal buttons appear for the wallets enabled in Settings → Payments. Toggle in the Product section.
+- **Delivery estimate:** Theme settings → Delivery estimate (cut-off hour, fastest and slowest working days, bank holidays). Update the bank-holiday list each year.
+- **Collapsible sections:** in the theme editor, Product section → add or edit *Collapsible section* blocks (Product details uses the product description; Fabric and care and Delivery and returns are editable text, so check the wording matches your real policies).
+- **You may also like:** Shopify's automatic recommendations (they improve as the store gets orders).
+- **Google rich results:** product data (price, stock, ratings if a reviews app provides them) is added automatically.
+- **Reviews:** install a reviews app (e.g. Judge.me); it plugs into the star-rating and structured data slots.
+
 ## Make the "Shop the deals" buttons work
 The hero, promo strip and flash-sale banner send shoppers to a collection with the handle **sale** (if it has products), otherwise to **All products**. To set it up: Products → Collections → Create collection → title **Sale**, type **Automated**, condition **Compare-at price is greater than 0**. Or set an explicit link in each section in the theme editor. The "Hot deals" section also falls back to the Sale collection, then all products, until you pick one.
 

@@ -45,6 +45,81 @@
     document.querySelectorAll('[data-sg-open]').forEach(function (b) { b.hidden = true; });
   }
 
+  // ---- Product gallery: swipe (scroll-snap), arrows, thumbnails, tap-to-zoom, jump to variant photo
+  var galApi = null, gal = document.querySelector('[data-gallery]');
+  if (gal) {
+    var track = gal.querySelector('[data-gal-track]'), slides = [].slice.call(track.children),
+        thumbs = [].slice.call(gal.querySelectorAll('[data-gal-thumb]')), thumbBox = gal.querySelector('[data-gal-thumbs]'),
+        count = gal.querySelector('[data-gal-count]'), cur = 0, tmr;
+    var setActive = function (i) {
+      cur = i;
+      thumbs.forEach(function (t, k) { t.classList.toggle('is-active', k === i); if (k === i) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+      if (count) count.textContent = (i + 1) + ' / ' + slides.length;
+      if (thumbBox && thumbs[i]) thumbBox.scrollTo({ left: thumbs[i].offsetLeft - 8, behavior: 'smooth' });
+    };
+    var go = function (i) { i = Math.max(0, Math.min(slides.length - 1, i)); track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }); setActive(i); };
+    track.addEventListener('scroll', function () {
+      clearTimeout(tmr); tmr = setTimeout(function () { var i = Math.round(track.scrollLeft / (track.clientWidth || 1)); if (i !== cur) setActive(i); }, 80);
+    }, { passive: true });
+    thumbs.forEach(function (t, k) { t.addEventListener('click', function () { go(k); }); });
+    var pv = gal.querySelector('[data-gal-prev]'), nx = gal.querySelector('[data-gal-next]');
+    if (pv) pv.addEventListener('click', function () { go(cur - 1); });
+    if (nx) nx.addEventListener('click', function () { go(cur + 1); });
+    track.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } });
+    galApi = { toImage: function (id) { for (var k = 0; k < slides.length; k++) { if (String(slides[k].dataset.imageId) === String(id)) { go(k); return; } } } };
+    // Tap or click a photo to zoom
+    var lb = gal.querySelector('[data-lightbox]'), lbImg = gal.querySelector('[data-lb-img]');
+    if (lb && lb.showModal) {
+      slides.forEach(function (sl) { sl.addEventListener('click', function () {
+        if (!sl.dataset.full) return; lbImg.src = sl.dataset.full; lbImg.classList.remove('zoomed'); lbImg.style.transformOrigin = ''; lb.showModal();
+      }); });
+      lb.querySelector('[data-lb-close]').addEventListener('click', function () { lb.close(); });
+      lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
+      lbImg.addEventListener('click', function (e) {
+        var r = lbImg.getBoundingClientRect();
+        lbImg.style.transformOrigin = ((e.clientX - r.left) / r.width * 100) + '% ' + ((e.clientY - r.top) / r.height * 100) + '%';
+        lbImg.classList.toggle('zoomed');
+      });
+    }
+  }
+
+  // ---- Delivery estimate (UK time, working days, bank holidays skipped)
+  var dl = document.querySelector('[data-delivery]');
+  if (dl && window.Intl) {
+    var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var hol = {}; (dl.dataset.holidays || '').split(/[\s,]+/).forEach(function (h) { if (h) hol[h] = 1; });
+    var iso = function (d) { return d.toISOString().slice(0, 10); };
+    var isWork = function (d) { var w = d.getUTCDay(); return w > 0 && w < 6 && !hol[iso(d)]; };
+    var addDay = function (d) { return new Date(d.getTime() + 86400000); };
+    var nextWork = function (d) { do { d = addDay(d); } while (!isWork(d)); return d; };
+    var addWork = function (d, n) { for (var k = 0; k < n; k++) d = nextWork(d); return d; };
+    var fmt = function (d) { return DAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()]; };
+    var estimate = function () {
+      var p = {}; new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+        .formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+      var today = new Date(Date.UTC(+p.year, +p.month - 1, +p.day)), hour = +p.hour % 24, cut = +dl.dataset.dlCutoff;
+      var before = isWork(today) && hour < cut, dispatch = before ? today : nextWork(today);
+      var lo = addWork(dispatch, +dl.dataset.min), hi = addWork(dispatch, +dl.dataset.max);
+      var range = iso(lo) === iso(hi) ? '<b>' + fmt(lo) + '</b>' : '<b>' + fmt(lo) + ' – ' + fmt(hi) + '</b>';
+      var note = '';
+      if (before) { var m = (cut - hour) * 60 - (+p.minute); note = ' <small>Order within ' + Math.floor(m / 60) + ' hrs ' + (m % 60) + ' mins</small>'; }
+      dl.querySelector('[data-delivery-text]').innerHTML = range + note;
+    };
+    estimate(); setInterval(estimate, 60000);
+  }
+
+  // ---- "You may also like": Shopify's product recommendations, loaded after the page
+  var rc = document.querySelector('[data-recs]');
+  if (rc && rc.dataset.url && window.fetch && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (en, ob) {
+      if (!en[0].isIntersecting) return; ob.disconnect();
+      fetch(rc.dataset.url).then(function (r) { return r.text(); }).then(function (html) {
+        var el = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-recs]');
+        if (el && el.innerHTML.trim()) rc.innerHTML = el.innerHTML;
+      }).catch(function () {});
+    }, { rootMargin: '300px' }).observe(rc);
+  }
+
   var f = document.querySelector('[data-product-form]');
   if (!f) return;
   var data = JSON.parse(f.querySelector('[data-variants]').textContent);
@@ -55,7 +130,8 @@
       barPrice = document.querySelector('[data-bar-price]');
 
   // Variant change: price, VAT, savings, stock and URL follow the chosen size
-  f.addEventListener('change', function () {
+  f.addEventListener('change', function (e) {
+    if (e.target === idInput) return; // our own id update (see below)
     var chosen = Array.from(f.querySelectorAll('.opt')).map(function (g) {
       var c = g.querySelector('input:checked'); return c && c.value;
     });
@@ -63,6 +139,8 @@
     showMsg('');
     if (!v) { idInput.value = ''; setLabel('Unavailable', true); stock(null); return; } // this combination does not exist: never add a wrong item
     idInput.value = v.id;
+    idInput.dispatchEvent(new Event('change', { bubbles: true })); // lets Shopify's express checkout buttons follow the size
+    if (galApi && v.image) galApi.toImage(v.image);
     setLabel(v.available ? btn.dataset.labelAdd : btn.dataset.labelSold, !v.available);
     stock(v);
     if (price) price.innerHTML = v.price_html;
@@ -104,6 +182,7 @@
   var busy = false;
   f.addEventListener('submit', function (e) {
     if (!window.fetch || !window.shopRoutes) return;
+    if (e.submitter && e.submitter.name === 'checkout') return; // express checkout / Buy it now goes straight to checkout
     e.preventDefault();
     if (busy || !idInput.value) return;
     busy = true; showMsg('');

@@ -92,6 +92,55 @@
     ]
   },
   {
+    "name": "Delivery estimate",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shows \u201cEstimated delivery: Wed 19 Nov \u2013 Thu 20 Nov\u201d on product pages, calculated in UK time from your dispatch cut-off and delivery times (Mon\u2013Fri, skipping bank holidays)."
+      },
+      {
+        "type": "checkbox",
+        "id": "delivery_estimate",
+        "label": "Show delivery estimate",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "dispatch_cutoff_hour",
+        "min": 8,
+        "max": 20,
+        "step": 1,
+        "label": "Orders placed before this hour (UK time) dispatch the same working day",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "delivery_min_days",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "label": "Fastest delivery (working days after dispatch)",
+        "default": 2
+      },
+      {
+        "type": "range",
+        "id": "delivery_max_days",
+        "min": 1,
+        "max": 14,
+        "step": 1,
+        "label": "Slowest delivery (working days after dispatch)",
+        "default": 3
+      },
+      {
+        "type": "textarea",
+        "id": "bank_holidays",
+        "label": "Bank holidays (YYYY-MM-DD, comma separated)",
+        "info": "England & Wales. Update every year.",
+        "default": "2026-12-25, 2026-12-28, 2027-01-01, 2027-03-26, 2027-03-29, 2027-05-03, 2027-05-31, 2027-08-30, 2027-12-27, 2027-12-28"
+      }
+    ]
+  },
+  {
     "name": "Size guide",
     "settings": [
       {
