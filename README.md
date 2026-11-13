@@ -22,7 +22,7 @@ a legal line in the footer, and fully editable homepage sections.
 
 ## Product page features
 - **Photo gallery:** swipe on phones, arrows and thumbnails on desktop, tap to zoom. If a variant (e.g. a colour) has its own photo assigned in Shopify (Products → variant → pick image), the gallery jumps to it.
-- **Secure-checkout icons (PNG):** theme editor → Product section. Either upload one PNG strip of all your cards (*Payment icons: one PNG strip*), or add one *Payment icon (PNG)* block per card. Use 2× size (e.g. 152 × 96 px) so they stay sharp on phones, and get official logos from each provider's brand centre (Visa, Mastercard, American Express, Apple, Google Pay, PayPal, Klarna). With nothing uploaded the theme shows Shopify's built-in icons for the methods you've enabled.
+- **Secure-checkout icons (PNG):** theme editor → Product section. Either upload one PNG strip of all your cards (*Payment icons: one PNG strip*), or add one *Payment icon (PNG)* block per card. Use 2× size (e.g. 152 × 96 px) so they stay sharp on phones, and get official logos from each provider's brand centre (Visa, Mastercard, American Express, Apple, Google Pay, PayPal, Klarna). With nothing uploaded, the theme shows its bundled PNG logos for the cards you've enabled (Visa, Mastercard, American Express, Maestro, PayPal, Discover, Diners Club, JCB: `assets/pay-*.png`, 152 × 96 px, about 1.5 KB each) and Shopify's built-in icons for the rest (Apple Pay, Google Pay, Klarna, Shop Pay). Apple, Google and Klarna require their own official marks, so upload those as PNG blocks if you want PNG for them too.
 - **Express checkout:** Shop Pay, Apple Pay, Google Pay and PayPal buttons appear for the wallets enabled in Settings → Payments. Toggle in the Product section.
 - **Delivery estimate:** Theme settings → Delivery estimate (cut-off hour, fastest and slowest working days, bank holidays). Update the bank-holiday list each year.
 - **Collapsible sections:** in the theme editor, Product section → add or edit *Collapsible section* blocks (Product details uses the product description; Fabric and care and Delivery and returns are editable text, so check the wording matches your real policies).
@@ -83,3 +83,6 @@ In Shopify admin, to keep it fast:
 - `sections/` hero-banner, value-props, featured-collection, collection-tiles, promo-strip, newsletter, header/footer groups, and `main-*` page sections
 - `snippets/` product-card, price, pagination, social-meta
 - `templates/` index, product, collection, list-collections, cart, page, search, 404
+
+## Credits
+Card logos in `assets/pay-*.png` were rendered from the open-source [payment-icons](https://www.npmjs.com/package/payment-icons) set (Mozilla Public License 2.0). The logos remain trademarks of their owners and are used only to show which cards the store accepts.

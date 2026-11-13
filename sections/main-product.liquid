@@ -88,7 +88,24 @@
         {%- elsif section.settings.payment_image != blank -%}
           {{ section.settings.payment_image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'pay__strip', widths: '300,450,600', sizes: '300px', alt: 'Accepted payment methods' }}
         {%- else -%}
-          <ul class="pay__icons">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'pay__icon' }}</li>{% endfor %}</ul>
+          {%- assign png_types = 'visa,master,american_express,maestro,paypal,discover,diners_club,jcb' | split: ',' -%}
+          <ul class="pay__icons">
+            {%- for type in shop.enabled_payment_types -%}
+              {%- if png_types contains type -%}
+                {%- case type -%}
+                  {%- when 'master' %}{% assign label = 'Mastercard' %}
+                  {%- when 'american_express' %}{% assign label = 'American Express' %}
+                  {%- when 'diners_club' %}{% assign label = 'Diners Club' %}
+                  {%- when 'jcb' %}{% assign label = 'JCB' %}
+                  {%- else %}{% assign label = type | capitalize %}
+                {%- endcase -%}
+                {%- assign png = 'pay-' | append: type | append: '.png' -%}
+                <li><img class="pay__png" src="{{ png | asset_url }}" alt="{{ label }}" width="38" height="24" loading="lazy" decoding="async"></li>
+              {%- else -%}
+                <li>{{ type | payment_type_svg_tag: class: 'pay__icon' }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
         {%- endif -%}
       </div>
     {%- endif -%}

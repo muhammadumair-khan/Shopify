@@ -255,3 +255,4 @@ img{content-visibility:auto}
 
 .pay__png{height:24px;width:auto;display:block}
 .pay__strip{max-width:300px;width:100%;height:auto;display:block}
+.pay__png{border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
