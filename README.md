@@ -20,6 +20,9 @@ a legal line in the footer, and fully editable homepage sections.
 - **Payments:** enable Shopify Payments (GBP), Apple Pay, Google Pay, Shop Pay, PayPal, and Klarna/Clearpay if wanted.
 - **Footer legal line:** your registered company name and number, VAT number and registered address (required on UK business websites).
 
+## Make the "Shop the deals" buttons work
+The hero, promo strip and flash-sale banner send shoppers to a collection with the handle **sale** (if it has products), otherwise to **All products**. To set it up: Products → Collections → Create collection → title **Sale**, type **Automated**, condition **Compare-at price is greater than 0**. Or set an explicit link in each section in the theme editor. The "Hot deals" section also falls back to the Sale collection, then all products, until you pick one.
+
 ## Different prices per size
 Set them in **Products → (product) → Variants**: give each size its own **Price** and **Compare-at price**.
 The theme then shows "From £X" and an "Up to Y% OFF" badge on listings, a price under each size button,

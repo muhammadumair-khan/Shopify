@@ -1,10 +1,13 @@
+{%- assign deals_url = section.settings.button_link -%}
+{%- if deals_url == blank and collections['sale'].products_count > 0 %}{% assign deals_url = collections['sale'].url %}{% endif -%}
+{%- if deals_url == blank %}{% assign deals_url = routes.all_products_collection_url %}{% endif -%}
 <section class="hero">
   <div class="hero__inner">
     <div class="hero__copy">
       {%- if section.settings.eyebrow != blank %}<span class="hero__eyebrow">{{ section.settings.eyebrow }}</span>{% endif -%}
       <h1>{{ section.settings.heading }}</h1>
       <p>{{ section.settings.text }}</p>
-      {%- if section.settings.button_label != blank %}<a class="btn btn--accent" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</a>{% endif -%}
+      {%- if section.settings.button_label != blank %}<a class="btn btn--accent" href="{{ deals_url }}">{{ section.settings.button_label }}</a>{% endif -%}
     </div>
     <div class="hero__img">
       {%- if section.settings.image -%}{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1400', sizes: '(max-width:900px) 100vw, 50vw' }}

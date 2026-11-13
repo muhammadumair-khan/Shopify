@@ -1,4 +1,6 @@
 {%- assign c = section.settings.collection -%}
+{%- if c == blank and collections['sale'].products_count > 0 %}{% assign c = collections['sale'] %}{% endif -%}
+{%- if c == blank %}{% assign c = collections['all'] %}{% endif -%}
 <section class="section{% if section.settings.soft %} section--soft{% endif %}">
   <div class="container">
     <div class="section__head">
