@@ -80,7 +80,7 @@ Products without their own chart use the default chart in **Theme settings → S
 | Customer accounts: log in, register, account, order, addresses, reset password, activate account | `customers/*` | Settings → Customer accounts → choose **Legacy customer accounts** (the new Shopify-hosted accounts don't use theme pages) |
 | Gift card | `gift_card.liquid` | Add a product of type gift card (Products → Add product → Gift card) |
 
-Not part of any theme (controlled by Shopify): checkout, order confirmation page, policy pages (Settings → Policies).
+Not part of any theme (controlled by Shopify): checkout, order confirmation page. Policy pages (Privacy, Terms, Refund, Shipping) are created in Settings → Policies; the theme styles them and lists them in the footer, and drafts are in `page-content/policies/`.
 Starter text for the content pages is in `page-content/`.
 
 ## Thank-you page (and the order confirmation)

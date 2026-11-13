@@ -354,3 +354,12 @@ h1,h2,h3,h4{word-spacing:.12em}
 .acct__grid>*,.contact>*,.acct{min-width:0}
 .tbl-wrap{max-width:100%}
 @media(max-width:640px){.grid--posts{grid-template-columns:1fr}}
+
+/* --- policy pages (Shopify renders these itself) and footer policy links --- */
+.shopify-policy__container{max-width:780px;margin:0 auto;padding:48px 20px}
+.shopify-policy__title h1{margin-bottom:24px}
+.shopify-policy__body{font-size:1.02rem;line-height:1.7}
+.shopify-policy__body h2,.shopify-policy__body h3{margin-top:1.8em}
+.shopify-policy__body table{border-collapse:collapse;width:100%;display:block;overflow-x:auto}
+.shopify-policy__body th,.shopify-policy__body td{border:1px solid #ddd;padding:8px;text-align:left}
+.footer__policies{list-style:none;display:flex;flex-wrap:wrap;gap:6px 22px;margin:28px 0 0;padding:0;font-size:.85rem}
