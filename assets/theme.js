@@ -18,7 +18,7 @@
       idInput.value = v.id;
       btn.disabled = !v.available;
       btn.textContent = v.available ? btn.dataset.labelAdd : btn.dataset.labelSold;
-      if (price) price.innerHTML = v.price_html;
+      if (price) price.innerHTML = v.price_html; // price, VAT and savings for this size
       var u = new URL(location.href); u.searchParams.set('variant', v.id); history.replaceState({}, '', u);
     });
   }

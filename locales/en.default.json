@@ -4,6 +4,7 @@
     "search": "Search",
     "cart": "Cart",
     "menu": "Menu",
+    "up_to": "Up to",
     "off": "{{ percent }}% OFF",
     "sold_out": "Sold out",
     "from": "From",

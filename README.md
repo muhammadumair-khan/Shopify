@@ -20,6 +20,11 @@ a legal line in the footer, and fully editable homepage sections.
 - **Payments:** enable Shopify Payments (GBP), Apple Pay, Google Pay, Shop Pay, PayPal, and Klarna/Clearpay if wanted.
 - **Footer legal line:** your registered company name and number, VAT number and registered address (required on UK business websites).
 
+## Different prices per size
+Set them in **Products → (product) → Variants**: give each size its own **Price** and **Compare-at price**.
+The theme then shows "From £X" and an "Up to Y% OFF" badge on listings, a price under each size button,
+and updates the price, "Inc. VAT" and "You save" amount when a customer picks a size.
+
 ## Pricing rules (CMA)
 "Was" prices (compare-at) must be genuine: the item should really have sold at that price recently. Avoid permanent "70% off" claims on stock that never sold at the higher price. "Up to 70% off" is only safe if some lines really are that much off.
 

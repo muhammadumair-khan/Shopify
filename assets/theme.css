@@ -138,3 +138,5 @@ h1{font-size:clamp(2.2rem,6vw,4.5rem)} h2{font-size:clamp(1.6rem,3.5vw,2.5rem)} 
 @media(max-width:520px){.tiles{grid-template-columns:1fr}.hero__sticker{width:96px;height:96px;font-size:.8rem}.hero__sticker b{font-size:1.5rem}}
 .footer__legal{font-size:.75rem;opacity:.6;margin:12px 0 0;max-width:80ch}
 .pdp__price small{font-size:.8rem;font-weight:700;opacity:.6;margin-left:8px}
+.opt label{line-height:1.2}.opt__price{display:block;font-size:.72rem;font-weight:700;opacity:.75}.price__vat{font-size:.75rem;font-weight:700;opacity:.6}
+.pdp__price .pdp__save{margin-top:6px}
