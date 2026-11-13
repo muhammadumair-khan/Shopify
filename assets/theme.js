@@ -192,22 +192,10 @@
     if (galApi && v.image) galApi.toImage(v.image);
     setLabel(v.available ? btn.dataset.labelAdd : btn.dataset.labelSold, !v.available);
     stock(v);
-    setQtyMax(v);
     if (price) price.innerHTML = v.price_html;
     if (barPrice) barPrice.innerHTML = v.price_html;
     try { var u = new URL(location.href); u.searchParams.set('variant', v.id); history.replaceState({}, '', u); } catch (e) {}
   });
-
-  // Quantity drop-down: 1 to 10, or up to the stock left for the chosen size
-  var qsel = document.getElementById('qty');
-  function setQtyMax(v) {
-    if (!qsel || qsel.tagName !== 'SELECT') return;
-    var max = 10;
-    if (v && v.managed && !v.oversell && v.qty > 0 && v.qty < 10) max = v.qty;
-    var cur = +qsel.value || 1; qsel.innerHTML = '';
-    for (var i = 1; i <= max; i++) { var o = document.createElement('option'); o.value = i; o.textContent = i; qsel.appendChild(o); }
-    qsel.value = Math.min(cur, max);
-  }
 
   var low = document.querySelector('[data-lowstock]');
   function stock(v) {
