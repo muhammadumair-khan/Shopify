@@ -92,6 +92,27 @@
     ]
   },
   {
+    "name": "Size guide",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Default size chart shown on products that have no chart of their own. One row per line, columns separated by |. The first line is the header. Per-product charts: Products > (product) > Metafields > Size chart."
+      },
+      {
+        "type": "textarea",
+        "id": "size_chart_default",
+        "label": "Default size chart (cm)",
+        "default": "UK size | Chest (cm) | Waist (cm) | Hip (cm)\nXS (6-8) | 82 | 64 | 88\nS (8-10) | 88 | 70 | 94\nM (12-14) | 96 | 78 | 102\nL (14-16) | 104 | 86 | 110\nXL (16-18) | 112 | 94 | 118"
+      },
+      {
+        "type": "textarea",
+        "id": "size_measure_tips",
+        "label": "How to measure",
+        "default": "Chest: around the fullest part, under your arms.\nWaist: around your natural waist, above the hips.\nHip: around the fullest part of your hips.\nIf you are between sizes, choose the larger size."
+      }
+    ]
+  },
+  {
     "name": "Low stock",
     "settings": [
       {

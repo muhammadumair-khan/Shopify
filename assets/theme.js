@@ -35,6 +35,16 @@
     var o = n.classList.toggle('open'); t.setAttribute('aria-expanded', o);
   });
 
+  // ---- Size guide popup
+  var sg = document.querySelector('[data-sg]');
+  if (sg && sg.showModal) {
+    document.querySelectorAll('[data-sg-open]').forEach(function (b) { b.addEventListener('click', function () { sg.showModal(); }); });
+    sg.querySelector('[data-sg-close]').addEventListener('click', function () { sg.close(); });
+    sg.addEventListener('click', function (e) { if (e.target === sg) sg.close(); });
+  } else {
+    document.querySelectorAll('[data-sg-open]').forEach(function (b) { b.hidden = true; });
+  }
+
   var f = document.querySelector('[data-product-form]');
   if (!f) return;
   var data = JSON.parse(f.querySelector('[data-variants]').textContent);

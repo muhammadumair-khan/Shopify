@@ -28,6 +28,24 @@ and updates the price, "Inc. VAT" and "You save" amount when a customer picks a 
 ## Pricing rules (CMA)
 "Was" prices (compare-at) must be genuine: the item should really have sold at that price recently. Avoid permanent "70% off" claims on stock that never sold at the higher price. "Up to 70% off" is only safe if some lines really are that much off.
 
+## Size guide, fit tag and model info (cuts wrong-size returns)
+Shown on product pages that have sizes. Set up once in Shopify admin: **Settings → Custom data → Products → Add definition**:
+
+| Name | Namespace and key | Type |
+|---|---|---|
+| Fit | `custom.fit` | Single line text (limit to: Runs small, True to size, Runs large) |
+| Size chart | `custom.size_chart` | Multi-line text |
+| Model info | `custom.model_info` | Single line text |
+
+Then fill them in on each product (or in the bulk-upload sheet). Size chart format: one row per line, columns separated by `|`, first line is the header:
+```
+Size | Chest (cm) | Waist (cm) | Length (cm)
+S | 96 | 82 | 68
+M | 102 | 88 | 70
+```
+Products without their own chart use the default chart in **Theme settings → Size guide**, along with the "How to measure" tips.
+"Runs small" tells shoppers to order one size up, "Runs large" one size down.
+
 ## Urgency features (legal in the UK when they are real)
 - **Sale countdown:** Theme settings → Sale countdown. Enter a fixed end date, e.g. `2026-11-30 23:59 +00:00` (UK time; +00:00 in winter, +01:00 in summer). It appears in the announcement bar, in the *Countdown banner* section (add it in the theme editor) and on product pages, and disappears when the sale ends. Every visitor sees the same end time.
 - **Low stock:** set one threshold in Theme settings → Low stock (0 = off). Product cards on the home and collection pages show an "Only N left" badge (total stock across sizes), the product page shows "Only N left in stock" for the chosen size, and size buttons show "2 left" for sizes running low. It reads your real Shopify inventory, so turn on **Track quantity** for your products. Products that allow overselling or don't track stock never show it.

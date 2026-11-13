@@ -1,0 +1,46 @@
+{%- comment -%} Fit tag, model info and size guide popup. Per product: metafields custom.fit, custom.size_chart, custom.model_info {%- endcomment -%}
+{%- assign fit = product.metafields.custom.fit.value | strip -%}
+{%- assign model = product.metafields.custom.model_info.value | strip -%}
+{%- assign chart = product.metafields.custom.size_chart.value | default: settings.size_chart_default -%}
+{%- assign fit_l = fit | downcase -%}
+<div class="fit">
+  {%- if fit != blank -%}
+    <span class="fit__tag{% if fit_l contains 'small' %} fit__tag--small{% elsif fit_l contains 'large' %} fit__tag--large{% endif %}">{{ fit }}</span>
+    <span class="fit__tip">
+      {%- if fit_l contains 'small' %}We recommend ordering one size up.
+      {%- elsif fit_l contains 'large' %}We recommend ordering one size down.
+      {%- else %}Order your usual size.{% endif -%}
+    </span>
+  {%- endif -%}
+  {%- if model != blank %}<span class="fit__model">{{ model }}</span>{% endif -%}
+  {%- if chart != blank %}<button type="button" class="fit__btn" data-sg-open>Size guide</button>{% endif -%}
+</div>
+{%- if chart != blank -%}
+<dialog class="sg" data-sg aria-labelledby="sg-title">
+  <div class="sg__head"><h3 id="sg-title">Size guide</h3><button type="button" class="sg__close" data-sg-close aria-label="Close">×</button></div>
+  <div class="sg__scroll">
+    <table class="sg__table">
+      {%- assign lines = chart | newline_to_br | split: '<br />' -%}
+      {%- assign header_done = false -%}
+      {%- for line in lines -%}
+        {%- assign l = line | strip -%}
+        {%- if l != blank -%}
+          {%- assign cells = l | split: '|' -%}
+          {%- if header_done == false -%}
+            <thead><tr>{% for c in cells %}<th scope="col">{{ c | strip }}</th>{% endfor %}</tr></thead><tbody>
+            {%- assign header_done = true -%}
+          {%- else -%}
+            <tr>{% for c in cells %}{% if forloop.first %}<th scope="row">{{ c | strip }}</th>{% else %}<td>{{ c | strip }}</td>{% endif %}{% endfor %}</tr>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+  {%- if settings.size_measure_tips != blank -%}
+    <h4>How to measure</h4>
+    <ul class="sg__tips">{% assign tips = settings.size_measure_tips | newline_to_br | split: '<br />' %}{% for t in tips %}{% assign tt = t | strip %}{% if tt != blank %}<li>{{ tt }}</li>{% endif %}{% endfor %}</ul>
+  {%- endif -%}
+  <p class="sg__note">Measurements are of the body, in cm. {% if fit != blank %}This item: {{ fit | downcase }}.{% endif %}</p>
+</dialog>
+{%- endif -%}
