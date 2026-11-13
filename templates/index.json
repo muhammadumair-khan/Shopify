@@ -1,19 +1,106 @@
-{ "sections": {
-    "hero": { "type": "hero-banner" },
-    "props": { "type": "value-props", "blocks": {
-      "a": { "type": "prop", "settings": { "title": "Up to 70% off", "text": "Real brands, real savings" } },
-      "b": { "type": "prop", "settings": { "title": "Free delivery", "text": "On orders over £50" } },
-      "c": { "type": "prop", "settings": { "title": "30-day returns", "text": "Don't love it? Send it back" } },
-      "d": { "type": "prop", "settings": { "title": "Secure checkout", "text": "Cards, Apple Pay, Shop Pay" } } },
-      "block_order": ["a","b","c","d"] },
-    "deals": { "type": "featured-collection", "settings": { "title": "Hot deals" } },
-    "tiles": { "type": "collection-tiles", "blocks": {
-      "m": { "type": "tile", "settings": { "label": "Men" } },
-      "w": { "type": "tile", "settings": { "label": "Women" } },
-      "k": { "type": "tile", "settings": { "label": "Kids" } } },
-      "block_order": ["m","w","k"] },
-    "promo": { "type": "promo-strip" },
-    "new": { "type": "featured-collection", "settings": { "title": "Just dropped", "soft": true } },
-    "news": { "type": "newsletter" }
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner"
+    },
+    "props": {
+      "type": "value-props",
+      "blocks": {
+        "a": {
+          "type": "prop",
+          "settings": {
+            "title": "Up to 70% off",
+            "text": "Real brands, real savings"
+          }
+        },
+        "b": {
+          "type": "prop",
+          "settings": {
+            "title": "Free delivery",
+            "text": "On orders over \u00a350"
+          }
+        },
+        "c": {
+          "type": "prop",
+          "settings": {
+            "title": "30-day returns",
+            "text": "Don't love it? Send it back"
+          }
+        },
+        "d": {
+          "type": "prop",
+          "settings": {
+            "title": "Secure checkout",
+            "text": "Cards, Apple Pay, Shop Pay"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ]
+    },
+    "deals": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Hot deals"
+      }
+    },
+    "tiles": {
+      "type": "collection-tiles",
+      "blocks": {
+        "m": {
+          "type": "tile",
+          "settings": {
+            "label": "Men"
+          }
+        },
+        "w": {
+          "type": "tile",
+          "settings": {
+            "label": "Women"
+          }
+        },
+        "k": {
+          "type": "tile",
+          "settings": {
+            "label": "Kids"
+          }
+        }
+      },
+      "block_order": [
+        "m",
+        "w",
+        "k"
+      ]
+    },
+    "promo": {
+      "type": "promo-strip"
+    },
+    "new": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Just dropped",
+        "soft": true
+      }
+    },
+    "news": {
+      "type": "newsletter"
+    },
+    "flash": {
+      "type": "countdown-banner"
+    }
   },
-  "order": ["hero","props","deals","tiles","promo","new","news"] }
+  "order": [
+    "hero",
+    "props",
+    "deals",
+    "tiles",
+    "flash",
+    "promo",
+    "new",
+    "news"
+  ]
+}

@@ -1,0 +1,11 @@
+{%- comment -%} Usage: render 'countdown'  (uses Theme settings > Sale countdown; renders nothing once it has ended) {%- endcomment -%}
+{%- assign end_ts = settings.sale_end | date: '%s' | plus: 0 -%}
+{%- assign now_ts = 'now' | date: '%s' | plus: 0 -%}
+{%- if settings.sale_end != blank and end_ts > now_ts -%}
+<div class="cd" data-countdown-wrap>
+  <span class="cd__label">{{ settings.sale_label }}</span>
+  <span class="cd__time" data-countdown="{{ end_ts }}" role="timer" aria-live="off">
+    <span><b data-u="d">--</b><i>d</i></span><span><b data-u="h">--</b><i>h</i></span><span><b data-u="m">--</b><i>m</i></span><span><b data-u="s">--</b><i>s</i></span>
+  </span>
+</div>
+{%- endif -%}

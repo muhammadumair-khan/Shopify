@@ -1,0 +1,20 @@
+{%- capture cd %}{% render 'countdown' %}{% endcapture -%}
+{%- if cd contains 'data-countdown' or request.design_mode -%}
+<section class="cd-banner" data-countdown-wrap-outer>
+  <div class="container">
+    <h2>{{ section.settings.heading }}</h2>
+    {{ cd }}
+    {%- if cd == blank %}<p>Set an end date in Theme settings → Sale countdown.</p>{% endif -%}
+    {%- if section.settings.button_label != blank %}<a class="btn btn--light" href="{{ section.settings.link | default: routes.collections_url }}">{{ section.settings.button_label }}</a>{% endif -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "Countdown banner",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Flash sale: extra 20% off" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Shop the sale" },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Countdown banner" }] }
+{% endschema %}

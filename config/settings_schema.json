@@ -1,37 +1,131 @@
 [
-  { "name": "theme_info", "theme_name": "DealFits", "theme_version": "1.0.0", "theme_author": "DealFits", "theme_documentation_url": "https://help.shopify.com/", "theme_support_url": "https://help.shopify.com/" },
+  {
+    "name": "theme_info",
+    "theme_name": "DealFits",
+    "theme_version": "1.0.0",
+    "theme_author": "DealFits",
+    "theme_documentation_url": "https://help.shopify.com/",
+    "theme_support_url": "https://help.shopify.com/"
+  },
   {
     "name": "Brand colours",
     "settings": [
-      { "type": "color", "id": "color_ink", "label": "Text / dark", "default": "#111111" },
-      { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
-      { "type": "color", "id": "color_soft", "label": "Soft background", "default": "#f6f3ec" },
-      { "type": "color", "id": "color_accent", "label": "Sale accent", "default": "#ff3d2e" },
-      { "type": "color", "id": "color_highlight", "label": "Highlight (yellow)", "default": "#ffe14d" }
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Text / dark",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_soft",
+        "label": "Soft background",
+        "default": "#f6f3ec"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Sale accent",
+        "default": "#ff3d2e"
+      },
+      {
+        "type": "color",
+        "id": "color_highlight",
+        "label": "Highlight (yellow)",
+        "default": "#ffe14d"
+      }
     ]
   },
   {
     "name": "Typography",
     "settings": [
-      { "type": "font_picker", "id": "heading_font", "label": "Headings", "default": "archivo_n9" },
-      { "type": "font_picker", "id": "body_font", "label": "Body", "default": "assistant_n4" }
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Headings",
+        "default": "archivo_n9"
+      },
+      {
+        "type": "font_picker",
+        "id": "body_font",
+        "label": "Body",
+        "default": "assistant_n4"
+      }
     ]
   },
   {
     "name": "Layout",
     "settings": [
-      { "type": "range", "id": "page_width", "min": 1000, "max": 1600, "step": 100, "unit": "px", "label": "Page width", "default": 1300 }
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 100,
+        "unit": "px",
+        "label": "Page width",
+        "default": 1300
+      }
     ]
   },
   {
     "name": "Sale badges",
     "settings": [
-      { "type": "checkbox", "id": "show_percent_badge", "label": "Show “% OFF” badge on discounted products", "default": true },
-      { "type": "checkbox", "id": "show_savings", "label": "Show “You save” amount on product page", "default": true }
+      {
+        "type": "checkbox",
+        "id": "show_percent_badge",
+        "label": "Show \u201c% OFF\u201d badge on discounted products",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_savings",
+        "label": "Show \u201cYou save\u201d amount on product page",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Sale countdown",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A real, fixed end date. It is shown in the announcement bar, the countdown banner and (optionally) on product pages, and hides itself when it ends."
+      },
+      {
+        "type": "text",
+        "id": "sale_end",
+        "label": "Sale ends (YYYY-MM-DD HH:MM +offset)",
+        "info": "UK time. Use +00:00 in winter and +01:00 in summer, e.g. 2026-11-30 23:59 +00:00. Leave blank for no countdown."
+      },
+      {
+        "type": "text",
+        "id": "sale_label",
+        "label": "Label",
+        "default": "Sale ends in"
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_in_bar",
+        "label": "Show in announcement bar",
+        "default": true
+      }
     ]
   },
   {
     "name": "Favicon",
-    "settings": [{ "type": "image_picker", "id": "favicon", "label": "Favicon (48×48)" }]
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon (48\u00d748)"
+      }
+    ]
   }
 ]

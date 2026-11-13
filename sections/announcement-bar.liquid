@@ -2,6 +2,7 @@
   {%- if section.settings.link != blank %}<a href="{{ section.settings.link }}">{% endif -%}
   {{ section.settings.text }}
   {%- if section.settings.link != blank %}</a>{% endif -%}
+  {%- if settings.sale_in_bar %}{% render 'countdown' %}{% endif -%}
 </div>
 {% schema %}
 { "name": "Announcement bar",

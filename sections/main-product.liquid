@@ -10,10 +10,12 @@
     {%- if product.vendor != blank %}<div class="card__vendor">{{ product.vendor }}</div>{% endif -%}
     <h1 style="font-size:clamp(1.8rem,3vw,2.6rem)">{{ product.title }}</h1>
     <div class="pdp__price" data-price>{% render 'variant-price', variant: current %}</div>
+    {%- if section.settings.show_countdown %}{% render 'countdown' %}{% endif -%}
+    <p class="lowstock" data-lowstock data-threshold="{{ section.settings.low_stock }}" hidden></p>
 
     {%- form 'product', product, id: 'product-form', data-product-form: '' -%}
       <script type="application/json" data-variants>
-        [{% for v in product.variants %}{"id":{{ v.id }},"available":{{ v.available }},"options":{{ v.options | json }},"price_html":{% capture ph %}{% render 'variant-price', variant: v %}{% endcapture %}{{ ph | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+        [{% for v in product.variants %}{"id":{{ v.id }},"available":{{ v.available }},"options":{{ v.options | json }},"qty":{{ v.inventory_quantity | default: 0 }},"managed":{% if v.inventory_management == 'shopify' %}true{% else %}false{% endif %},"price_html":{% capture ph %}{% render 'variant-price', variant: v %}{% endcapture %}{{ ph | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
       </script>
       <input type="hidden" name="id" value="{{ current.id }}">
       {%- unless product.has_only_default_variant -%}
@@ -37,6 +39,7 @@
       </button>
     {%- endform -%}
 
+    {%- if section.settings.show_cutoff %}<p class="cutoff" data-cutoff="{{ section.settings.cutoff_hour }}"></p>{% endif -%}
     <ul class="trust">
       {%- for block in section.blocks -%}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{%- endfor -%}
     </ul>
@@ -49,6 +52,12 @@
 </div>
 {% schema %}
 { "name": "Product",
+  "settings": [
+    { "type": "range", "id": "low_stock", "min": 0, "max": 20, "step": 1, "label": "Show “Only N left” at or below (0 = off)", "info": "Uses your real inventory. Only works for products where Shopify tracks stock.", "default": 5 },
+    { "type": "checkbox", "id": "show_countdown", "label": "Show sale countdown", "default": true },
+    { "type": "checkbox", "id": "show_cutoff", "label": "Show “order within… for same-day dispatch”", "default": false },
+    { "type": "range", "id": "cutoff_hour", "min": 8, "max": 20, "step": 1, "label": "Dispatch cut-off (UK time, 24h)", "info": "Mon–Fri. Only turn on if you truly dispatch same day.", "default": 14 }
+  ],
   "blocks": [{ "type": "trust", "name": "Trust line", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Free delivery over £50" }] }],
   "presets": [{ "name": "Product", "blocks": [
     { "type": "trust", "settings": { "text": "Free delivery over £50" } },
