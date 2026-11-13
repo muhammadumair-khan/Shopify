@@ -252,3 +252,6 @@ img{content-visibility:auto}
 .acc summary::after{content:"+";font-size:1.5rem;line-height:1}
 .acc[open] summary::after{content:"\2212"}
 .acc__body{padding:0 0 18px}
+
+.pay__png{height:24px;width:auto;display:block}
+.pay__strip{max-width:300px;width:100%;height:auto;display:block}

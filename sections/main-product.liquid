@@ -74,9 +74,22 @@
     <ul class="trust">
       {%- for block in section.blocks -%}{%- if block.type == 'trust' -%}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{%- endif -%}{%- endfor -%}
     </ul>
-    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+    {%- assign icon_blocks = section.blocks | where: 'type', 'payment_icon' -%}
+    {%- if section.settings.show_payment_icons and icon_blocks.size > 0 or section.settings.show_payment_icons and section.settings.payment_image != blank or section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
       <div class="pay"><span class="pay__label">Secure checkout</span>
-        <ul class="pay__icons">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'pay__icon' }}</li>{% endfor %}</ul>
+        {%- if icon_blocks.size > 0 -%}
+          <ul class="pay__icons">
+            {%- for block in icon_blocks -%}
+              {%- if block.settings.image != blank -%}
+                <li {{ block.shopify_attributes }}>{{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', class: 'pay__png', widths: '80,120,160', sizes: '60px', alt: block.settings.name }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- elsif section.settings.payment_image != blank -%}
+          {{ section.settings.payment_image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'pay__strip', widths: '300,450,600', sizes: '300px', alt: 'Accepted payment methods' }}
+        {%- else -%}
+          <ul class="pay__icons">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag: class: 'pay__icon' }}</li>{% endfor %}</ul>
+        {%- endif -%}
       </div>
     {%- endif -%}
     <div class="accs">
@@ -124,6 +137,12 @@
       "id": "show_payment_icons",
       "label": "Show payment icons",
       "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_image",
+      "label": "Payment icons: one PNG strip (optional)",
+      "info": "One image showing all your accepted cards, about 600 px wide. Ignored if you add individual icons below."
     },
     {
       "type": "checkbox",
@@ -180,6 +199,24 @@
           "id": "open",
           "label": "Open by default",
           "default": false
+        }
+      ]
+    },
+    {
+      "type": "payment_icon",
+      "name": "Payment icon (PNG)",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "PNG icon",
+          "info": "Upload at 2× size, e.g. 152 × 96 px, transparent or white background."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name (for screen readers)",
+          "default": "Visa"
         }
       ]
     }
