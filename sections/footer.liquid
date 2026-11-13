@@ -12,12 +12,13 @@
         </div>
       {%- endfor -%}
     </div>
-    <div class="footer__bottom"><span>© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span><span>Prices in {{ cart.currency.iso_code }}</span></div>
+    <div class="footer__bottom"><span>© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span><span>Prices in £ GBP{% if shop.taxes_included %}, including VAT{% endif %}</span></div>
+    {%- if section.settings.legal != blank %}<p class="footer__legal">{{ section.settings.legal }}</p>{% endif -%}
   </div>
 </footer>
 {% schema %}
 { "name": "Footer",
-  "settings": [{ "type": "textarea", "id": "blurb", "label": "Blurb", "default": "Brand-name style at prices that make sense. New deals dropped every week." }],
+  "settings": [{ "type": "textarea", "id": "legal", "label": "Legal line (company name, number, VAT no., registered address)", "default": "DealFits Ltd. Registered in England & Wales, company no. 00000000. VAT no. GB000000000. Registered office: add your address." }, { "type": "textarea", "id": "blurb", "label": "Blurb", "default": "Brand-name style at prices that make sense. New deals dropped every week." }],
   "blocks": [{ "type": "menu", "name": "Menu", "settings": [
     { "type": "text", "id": "title", "label": "Heading", "default": "Shop" },
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }] }],

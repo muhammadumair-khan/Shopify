@@ -2,7 +2,7 @@
     "hero": { "type": "hero-banner" },
     "props": { "type": "value-props", "blocks": {
       "a": { "type": "prop", "settings": { "title": "Up to 70% off", "text": "Real brands, real savings" } },
-      "b": { "type": "prop", "settings": { "title": "Free shipping", "text": "On orders over $75" } },
+      "b": { "type": "prop", "settings": { "title": "Free delivery", "text": "On orders over £50" } },
       "c": { "type": "prop", "settings": { "title": "30-day returns", "text": "Don't love it? Send it back" } },
       "d": { "type": "prop", "settings": { "title": "Secure checkout", "text": "Cards, Apple Pay, Shop Pay" } } },
       "block_order": ["a","b","c","d"] },

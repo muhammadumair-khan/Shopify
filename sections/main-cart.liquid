@@ -23,7 +23,7 @@
       {%- if threshold > 0 -%}
         {%- assign left = threshold | minus: cart.total_price -%}
         <div class="free-ship">
-          {%- if left > 0 %}Add {{ left | money }} more for FREE shipping!{% else %}🎉 You've unlocked free shipping!{% endif -%}
+          {%- if left > 0 %}Add {{ left | money }} more for FREE delivery!{% else %}🎉 You've unlocked free delivery!{% endif -%}
           {%- assign pct = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
           <i><b style="width:{{ pct }}%"></b></i>
         </div>
@@ -39,5 +39,5 @@
 </div>
 {% schema %}
 { "name": "Cart",
-  "settings": [{ "type": "number", "id": "free_shipping_cents", "label": "Free-shipping threshold (in cents, 0 = off)", "default": 7500 }] }
+  "settings": [{ "type": "number", "id": "free_shipping_cents", "label": "Free-delivery threshold (in pence, 0 = off)", "default": 5000 }] }
 {% endschema %}

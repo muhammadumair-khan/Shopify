@@ -14,7 +14,7 @@
   <div class="pdp__info">
     {%- if product.vendor != blank %}<div class="card__vendor">{{ product.vendor }}</div>{% endif -%}
     <h1 style="font-size:clamp(1.8rem,3vw,2.6rem)">{{ product.title }}</h1>
-    <div class="pdp__price" data-price>{% render 'price', product: product %}</div>
+    <div class="pdp__price" data-price>{% render 'price', product: product %}{% if shop.taxes_included %}<small>Inc. VAT</small>{% endif %}</div>
     {%- if pct > 0 and settings.show_savings %}<span class="pdp__save">{{ 'product.save' | t: amount: save_money }} ({{ pct }}%)</span>{% endif -%}
 
     {%- form 'product', product, data-product-form: '' -%}
@@ -48,9 +48,9 @@
 </div>
 {% schema %}
 { "name": "Product",
-  "blocks": [{ "type": "trust", "name": "Trust line", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Free shipping over $75" }] }],
+  "blocks": [{ "type": "trust", "name": "Trust line", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Free delivery over £50" }] }],
   "presets": [{ "name": "Product", "blocks": [
-    { "type": "trust", "settings": { "text": "Free shipping over $75" } },
+    { "type": "trust", "settings": { "text": "Free delivery over £50" } },
     { "type": "trust", "settings": { "text": "30-day easy returns" } },
     { "type": "trust", "settings": { "text": "100% authentic, brand-name styles" } }] }] }
 {% endschema %}

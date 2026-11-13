@@ -9,7 +9,7 @@
       {%- if c != blank -%}
         {%- for product in c.products limit: section.settings.limit -%}{% render 'product-card', product: product %}{%- endfor -%}
       {%- else -%}
-        {%- for i in (1..4) -%}<div class="card"><div class="card__media">{{ 'product-1' | placeholder_svg_tag }}</div><div class="card__title">Example product</div><div class="price"><span class="price__now">$19.00</span></div></div>{%- endfor -%}
+        {%- for i in (1..4) -%}<div class="card"><div class="card__media">{{ 'product-1' | placeholder_svg_tag }}</div><div class="card__title">Example product</div><div class="price"><span class="price__now">£19.00</span></div></div>{%- endfor -%}
       {%- endif -%}
     </div>
   </div>

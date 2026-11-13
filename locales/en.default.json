@@ -25,7 +25,7 @@
     "empty": "Your cart is empty",
     "subtotal": "Subtotal",
     "checkout": "Checkout",
-    "note": "Taxes and shipping calculated at checkout.",
+    "note": "VAT included. Delivery calculated at checkout.",
     "remove": "Remove"
   },
   "search": { "title": "Search results", "placeholder": "Search jeans, tees, hoodies…", "none": "No results for “{{ terms }}”" },
