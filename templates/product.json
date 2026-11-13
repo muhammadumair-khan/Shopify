@@ -6,19 +6,25 @@
         "t1": {
           "type": "trust",
           "settings": {
-            "text": "Free delivery over £50"
+            "icon": "truck",
+            "text": "Free delivery",
+            "subtitle": "On orders over £50"
           }
         },
         "t2": {
           "type": "trust",
           "settings": {
-            "text": "30-day returns and exchanges"
+            "icon": "return",
+            "text": "30-day returns",
+            "subtitle": "Easy size exchanges"
           }
         },
         "t3": {
           "type": "trust",
           "settings": {
-            "text": "100% authentic, brand-name styles"
+            "icon": "shield",
+            "text": "100% authentic",
+            "subtitle": "Brand-name styles"
           }
         },
         "a1": {

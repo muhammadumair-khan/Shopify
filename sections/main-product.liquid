@@ -71,9 +71,18 @@
     {%- endif -%}
 
     {%- if section.settings.show_cutoff %}<p class="cutoff" data-cutoff="{{ section.settings.cutoff_hour }}"></p>{% endif -%}
-    <ul class="trust">
-      {%- for block in section.blocks -%}{%- if block.type == 'trust' -%}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{%- endif -%}{%- endfor -%}
-    </ul>
+    {%- assign trust_blocks = section.blocks | where: 'type', 'trust' -%}
+    {%- if trust_blocks.size > 0 -%}
+      <ul class="trust">
+        {%- for block in trust_blocks -%}
+          <li class="trust__item" {{ block.shopify_attributes }}>
+            <span class="trust__icon">{% render 'trust-icon', icon: block.settings.icon %}</span>
+            <span class="trust__title">{{ block.settings.text }}</span>
+            {%- if block.settings.subtitle != blank %}<span class="trust__sub">{{ block.settings.subtitle }}</span>{% endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
     {%- assign icon_blocks = section.blocks | where: 'type', 'payment_icon' -%}
     {%- if section.settings.show_payment_icons and icon_blocks.size > 0 or section.settings.show_payment_icons and section.settings.payment_image != blank or section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
       <div class="pay"><span class="pay__label">Secure checkout</span>
@@ -183,10 +192,48 @@
       "name": "Trust line",
       "settings": [
         {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "truck",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Delivery van"
+            },
+            {
+              "value": "return",
+              "label": "Returns arrow"
+            },
+            {
+              "value": "shield",
+              "label": "Shield tick"
+            },
+            {
+              "value": "tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "lock",
+              "label": "Padlock"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            }
+          ]
+        },
+        {
           "type": "text",
           "id": "text",
-          "label": "Text",
-          "default": "Free delivery over £50"
+          "label": "Title",
+          "default": "Free delivery"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Small text",
+          "default": "On orders over £50"
         }
       ]
     },
