@@ -2,7 +2,9 @@
 <html lang="{{ request.locale.iso_code }}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
   <meta name="theme-color" content="{{ settings.color_ink }}">
   <title>{{ page_title }}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} – {{ shop.name }}{% endunless %}</title>
   {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
@@ -23,7 +25,9 @@
     {{ settings.body_font | font_face: font_display: 'swap' }}
     {{ settings.heading_font | font_face: font_display: 'swap' }}
   </style>
+  <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style">
   <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+  <script>window.shopRoutes={cart:{{ routes.cart_url | json }},cartAdd:{{ routes.cart_add_url | json }}};</script>
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   {{ content_for_header }}
 </head>

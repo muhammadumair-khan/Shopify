@@ -7,7 +7,7 @@
       {%- if section.settings.button_label != blank %}<a class="btn btn--accent" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</a>{% endif -%}
     </div>
     <div class="hero__img">
-      {%- if section.settings.image -%}{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600,900,1400', sizes: '(max-width:900px) 100vw, 50vw' }}
+      {%- if section.settings.image -%}{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1400', sizes: '(max-width:900px) 100vw, 50vw' }}
       {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag }}{%- endif -%}
     </div>
   </div>

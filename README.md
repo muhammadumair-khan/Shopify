@@ -28,6 +28,20 @@ and updates the price, "Inc. VAT" and "You save" amount when a customer picks a 
 ## Pricing rules (CMA)
 "Was" prices (compare-at) must be genuine: the item should really have sold at that price recently. Avoid permanent "70% off" claims on stock that never sold at the higher price. "Up to 70% off" is only safe if some lines really are that much off.
 
+## Speed and mobile checklist
+Built into the theme: no JavaScript libraries, one small CSS and one small JS file (JS is deferred), responsive
+`srcset` images in modern formats via Shopify's CDN, explicit image sizes (no layout jumps), a high-priority hero image,
+lazy-loaded product images, preconnected CDNs, add-to-cart without a page reload, a sticky add-to-cart bar on phones,
+44px minimum tap targets, 16px form text (no iPhone zoom), notch-safe spacing, and reduced-motion support.
+
+In Shopify admin, to keep it fast:
+- **Apps:** install as few as you can. Each one usually adds scripts to every page. Remove unused apps and their leftover code.
+- **Images:** upload product photos about 2000px on the long side, in the same portrait ratio (3:4), under about 500 KB. Shopify converts them to WebP/AVIF.
+- **Fonts:** keep to two fonts (Theme settings → Typography); each extra weight adds load time.
+- **Homepage:** keep to 6–8 sections, and use short videos or sliders sparingly.
+- **Measure:** run PageSpeed Insights on the home, collection and product pages (mobile), and check Online Store → Themes → speed report. Aim for LCP under 2.5 s.
+- **Test on a real phone** on mobile data, not only on Wi-Fi.
+
 ## Structure
 - `sections/` hero-banner, value-props, featured-collection, collection-tiles, promo-strip, newsletter, header/footer groups, and `main-*` page sections
 - `snippets/` product-card, price, pagination, social-meta
