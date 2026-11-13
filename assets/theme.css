@@ -263,3 +263,5 @@ img{content-visibility:auto}
 .trust__title{font:800 .74rem/1.2 var(--font-head);text-transform:uppercase;letter-spacing:.04em;overflow-wrap:anywhere}
 .trust__sub{font-size:.76rem;line-height:1.3;opacity:.75;overflow-wrap:anywhere}
 @media(max-width:380px){.trust{gap:6px}.trust__item{padding:10px 4px}.trust__title{font-size:.68rem}}
+
+.summary .trust{margin-top:20px}.summary .pay{margin-top:16px}

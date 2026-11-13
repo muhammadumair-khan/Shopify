@@ -1,1 +1,41 @@
-{ "sections": { "main": { "type": "main-cart" } }, "order": ["main"] }
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "blocks": {
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "text": "Free delivery",
+            "subtitle": "On orders over £50"
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "return",
+            "text": "30-day returns",
+            "subtitle": "Easy size exchanges"
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "lock",
+            "text": "Secure checkout",
+            "subtitle": "Your details are protected"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

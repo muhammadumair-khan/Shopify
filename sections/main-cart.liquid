@@ -33,11 +33,97 @@
       <p><small>{{ 'cart.note' | t }}</small></p>
       <button class="btn btn--block" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
       <p style="text-align:center"><button class="link-arrow" style="background:none;border:0;cursor:pointer" type="submit" name="update">Update cart</button></p>
+      {%- if section.settings.show_trust %}{% render 'trust-badges', blocks: section.blocks %}{% endif -%}
+      {%- if section.settings.show_payment_icons %}{% render 'payment-icons', blocks: section.blocks, strip: section.settings.payment_image %}{% endif -%}
     </div>
   </form>
   {%- endif -%}
 </div>
 {% schema %}
-{ "name": "Cart",
-  "settings": [{ "type": "number", "id": "free_shipping_cents", "label": "Free-delivery threshold (in pence, 0 = off)", "default": 5000 }] }
+{
+  "name": "Cart",
+  "settings": [
+    {
+      "type": "number",
+      "id": "free_shipping_cents",
+      "label": "Free-delivery threshold (in pence, 0 = off)",
+      "default": 5000
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust",
+      "label": "Show trust badges under the checkout button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show “Secure checkout” card icons",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "payment_image",
+      "label": "Card icons: one PNG strip (optional)",
+      "info": "Replaces the automatic icons. About 600 px wide."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust line",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "truck",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Delivery van"
+            },
+            {
+              "value": "return",
+              "label": "Returns arrow"
+            },
+            {
+              "value": "shield",
+              "label": "Shield tick"
+            },
+            {
+              "value": "tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "lock",
+              "label": "Padlock"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Title",
+          "default": "Free delivery"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Small text",
+          "default": "On orders over £50"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart"
+    }
+  ]
+}
 {% endschema %}

@@ -1,0 +1,13 @@
+{%- comment -%} Usage: render 'trust-badges', blocks: section.blocks  (uses blocks of type "trust") {%- endcomment -%}
+{%- assign trust_blocks = blocks | where: 'type', 'trust' -%}
+{%- if trust_blocks.size > 0 -%}
+  <ul class="trust">
+    {%- for block in trust_blocks -%}
+      <li class="trust__item" {{ block.shopify_attributes }}>
+        <span class="trust__icon">{% render 'trust-icon', icon: block.settings.icon %}</span>
+        <span class="trust__title">{{ block.settings.text }}</span>
+        {%- if block.settings.subtitle != blank %}<span class="trust__sub">{{ block.settings.subtitle }}</span>{% endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
