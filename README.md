@@ -67,6 +67,11 @@ Products without their own chart use the default chart in **Theme settings → S
 - **Dispatch cut-off:** optional "Order within 3 hrs 12 mins for same-day dispatch" (Mon–Fri, UK time). Enable only if you truly dispatch same day.
 - Do not use timers that reset per visitor, fake "X people viewing" or invented stock levels. The DMCC Act 2024 and CMA treat these as unfair practices. Do not run a "sale ends" countdown and then repeat the same price.
 
+## Thank-you page (and the order confirmation)
+**Custom Thank-you page (in the theme):** Online Store → Pages → Add page → Theme template **page.thank-you**. Edit the message, the three "What happens next" steps, an optional discount code (create the same code under Discounts first) and a collection of products. Search engines are told to skip it (noindex). Use it as the landing page after newsletter or contact sign-ups, or link to it from email automations.
+
+**The page shown right after paying (order confirmation):** Shopify controls this page; a theme cannot change it. In Settings → Checkout and customer accounts → Customize you can set your logo, colours and fonts (use #111111 text, #FF3D2E accent, #FFE14D highlight), and apps can add blocks such as post-purchase offers. Also customise the **order confirmation email** (Settings → Notifications → Customer notifications → Order confirmation): add your logo, a "what happens next" line, delivery estimate and a size-exchange link.
+
 ## Speed and mobile checklist
 Built into the theme: no JavaScript libraries, one small CSS and one small JS file (JS is deferred), responsive
 `srcset` images in modern formats via Shopify's CDN, explicit image sizes (no layout jumps), a high-priority hero image,

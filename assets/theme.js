@@ -120,6 +120,20 @@
     }, { rootMargin: '300px' }).observe(rc);
   }
 
+  // ---- Copy-to-clipboard buttons (discount code on the Thank-you page)
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var label = b.textContent;
+      function done() { b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = label; }, 1500); }
+      function fallback() {
+        var el = document.querySelector('[data-copy-text]');
+        if (el) { var r = document.createRange(); r.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+        b.textContent = 'Press copy'; setTimeout(function () { b.textContent = label; }, 2000);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(b.dataset.copy).then(done, fallback); else fallback();
+    });
+  });
+
   var f = document.querySelector('[data-product-form]');
   if (!f) return;
   var data = JSON.parse(f.querySelector('[data-variants]').textContent);

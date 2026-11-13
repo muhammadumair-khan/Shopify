@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "main": {
+      "type": "thank-you",
+      "settings": {},
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "We pack it",
+            "text": "Orders placed before 2pm are dispatched the same working day."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "You get tracking",
+            "text": "We email your tracking link as soon as it leaves us."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "It arrives",
+            "text": "Free delivery over £50. Wrong size? Exchange it within 30 days."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

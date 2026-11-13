@@ -1,0 +1,54 @@
+<section class="ty container">
+  <div class="ty__check" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+  <h1>{{ section.settings.heading }}</h1>
+  <p class="ty__lead">{{ section.settings.text }}</p>
+
+  {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+  {%- if step_blocks.size > 0 -%}
+    <h2 class="ty__h2">What happens next</h2>
+    <ol class="ty__steps">
+      {%- for block in step_blocks -%}
+        <li class="ty__step" {{ block.shopify_attributes }}><b>{{ block.settings.title }}</b><span>{{ block.settings.text }}</span></li>
+      {%- endfor -%}
+    </ol>
+  {%- endif -%}
+
+  {%- if section.settings.code != blank -%}
+    <div class="ty__offer">
+      <p>{{ section.settings.code_text }}</p>
+      <div class="ty__code"><code data-copy-text>{{ section.settings.code }}</code><button type="button" class="btn" data-copy="{{ section.settings.code }}">Copy code</button></div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.button_label != blank -%}
+    <p><a class="btn btn--accent" href="{% if section.settings.button_link != blank %}{{ section.settings.button_link }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ section.settings.button_label }}</a></p>
+  {%- endif -%}
+
+  {%- assign c = section.settings.collection -%}
+  {%- if c != blank and c.products_count > 0 -%}
+    <div class="ty__more">
+      <h2>{{ section.settings.more_title }}</h2>
+      <div class="grid" style="--cols:4">
+        {%- for product in c.products limit: 4 -%}{% render 'product-card', product: product %}{%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "Thank you",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Thank you!" },
+    { "type": "textarea", "id": "text", "label": "Message", "default": "We've got your details. Fresh deals land every week, so keep an eye on your inbox." },
+    { "type": "text", "id": "code", "label": "Discount code (optional)", "info": "Create the same code in Discounts first. Leave blank to hide the box." },
+    { "type": "text", "id": "code_text", "label": "Text above the code", "default": "Here's 10% off your next order:" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Keep shopping" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "more_title", "label": "Products heading", "default": "While you're here" },
+    { "type": "collection", "id": "collection", "label": "Collection to show (optional)" }
+  ],
+  "blocks": [{ "type": "step", "name": "Step", "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "We pack it" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Orders placed before 2pm are dispatched the same working day." }] }],
+  "max_blocks": 4,
+  "presets": [{ "name": "Thank you" }] }
+{% endschema %}
