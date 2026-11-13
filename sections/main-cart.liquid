@@ -1,0 +1,43 @@
+{%- assign threshold = section.settings.free_shipping_cents -%}
+<div class="container">
+  <h1 style="padding-top:40px">{{ 'cart.title' | t }}</h1>
+  {%- if cart.item_count == 0 -%}
+    <div class="center"><p>{{ 'cart.empty' | t }}</p><a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'general.continue' | t }}</a></div>
+  {%- else -%}
+  <form action="{{ routes.cart_url }}" method="post" class="cart">
+    <div>
+      {%- for item in cart.items -%}
+        <div class="line">
+          <a href="{{ item.url }}">{% if item.image %}{{ item.image | image_url: width: 180 | image_tag: loading: 'lazy' }}{% endif %}</a>
+          <div>
+            <a href="{{ item.url }}"><b>{{ item.product.title }}</b></a>
+            {%- unless item.product.has_only_default_variant %}<div><small>{{ item.variant.title }}</small></div>{% endunless -%}
+            <div class="price{% if item.original_price > item.final_price %} price--sale{% endif %}"><span class="price__now">{{ item.final_price | money }}</span>{% if item.original_price > item.final_price %}<s class="price__was">{{ item.original_price | money }}</s>{% endif %}</div>
+            <a href="{{ item.url_to_remove }}"><small>{{ 'cart.remove' | t }}</small></a>
+          </div>
+          <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity">
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="summary">
+      {%- if threshold > 0 -%}
+        {%- assign left = threshold | minus: cart.total_price -%}
+        <div class="free-ship">
+          {%- if left > 0 %}Add {{ left | money }} more for FREE shipping!{% else %}🎉 You've unlocked free shipping!{% endif -%}
+          {%- assign pct = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
+          <i><b style="width:{{ pct }}%"></b></i>
+        </div>
+      {%- endif -%}
+      <div class="summary__row"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.total_price | money }}</span></div>
+      {%- if cart.total_discount > 0 %}<p style="color:var(--c-accent);font-weight:800">You saved {{ cart.total_discount | money }}</p>{% endif -%}
+      <p><small>{{ 'cart.note' | t }}</small></p>
+      <button class="btn btn--block" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+      <p style="text-align:center"><button class="link-arrow" style="background:none;border:0;cursor:pointer" type="submit" name="update">Update cart</button></p>
+    </div>
+  </form>
+  {%- endif -%}
+</div>
+{% schema %}
+{ "name": "Cart",
+  "settings": [{ "type": "number", "id": "free_shipping_cents", "label": "Free-shipping threshold (in cents, 0 = off)", "default": 7500 }] }
+{% endschema %}

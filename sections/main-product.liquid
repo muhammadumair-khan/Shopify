@@ -1,0 +1,56 @@
+{%- assign current = product.selected_or_first_available_variant -%}
+{%- assign save = current.compare_at_price | minus: current.price -%}
+{%- assign save_money = save | money -%}
+{%- if current.compare_at_price > current.price -%}
+  {%- assign pct = save | times: 100 | divided_by: current.compare_at_price -%}
+{%- else -%}{%- assign pct = 0 -%}{%- endif -%}
+<div class="container pdp">
+  <div class="pdp__gallery">
+    {%- for image in product.images -%}
+      {%- if forloop.first -%}{{ image | image_url: width: 1200 | image_tag: loading: 'eager', widths: '600,900,1200', sizes: '(max-width:900px) 100vw, 40vw' }}
+      {%- else -%}{{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(max-width:900px) 100vw, 40vw' }}{%- endif -%}
+    {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endfor -%}
+  </div>
+  <div class="pdp__info">
+    {%- if product.vendor != blank %}<div class="card__vendor">{{ product.vendor }}</div>{% endif -%}
+    <h1 style="font-size:clamp(1.8rem,3vw,2.6rem)">{{ product.title }}</h1>
+    <div class="pdp__price" data-price>{% render 'price', product: product %}</div>
+    {%- if pct > 0 and settings.show_savings %}<span class="pdp__save">{{ 'product.save' | t: amount: save_money }} ({{ pct }}%)</span>{% endif -%}
+
+    {%- form 'product', product, data-product-form: '' -%}
+      <script type="application/json" data-variants>
+        [{% for v in product.variants %}{"id":{{ v.id }},"available":{{ v.available }},"options":{{ v.options | json }},"price_html":{% capture ph %}<div class="price{% if v.compare_at_price > v.price %} price--sale{% endif %}"><span class="price__now">{{ v.price | money }}</span>{% if v.compare_at_price > v.price %}<s class="price__was">{{ v.compare_at_price | money }}</s>{% endif %}</div>{% endcapture %}{{ ph | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+      </script>
+      <input type="hidden" name="id" value="{{ current.id }}">
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <fieldset class="opt" style="border:0;padding:0;margin:18px 0">
+            <legend>{{ option.name }}</legend>
+            <div class="opt__vals">
+              {%- for value in option.values -%}
+                <input type="radio" id="o{{ option.position }}-{{ forloop.index }}" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %}>
+                <label for="o{{ option.position }}-{{ forloop.index }}">{{ value }}</label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endfor -%}
+      {%- endunless -%}
+      <button class="btn btn--accent btn--block" type="submit" data-add data-label-sold="{{ 'product.sold_out' | t }}" data-label-add="{{ 'product.add' | t }}" {% unless current.available %}disabled{% endunless %}>
+        {%- if current.available %}{{ 'product.add' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif -%}
+      </button>
+    {%- endform -%}
+
+    <ul class="trust">
+      {%- for block in section.blocks -%}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{%- endfor -%}
+    </ul>
+    <div class="pdp__desc rte">{{ product.description }}<p><small>{{ 'product.size_guide' | t }}</small></p></div>
+  </div>
+</div>
+{% schema %}
+{ "name": "Product",
+  "blocks": [{ "type": "trust", "name": "Trust line", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Free shipping over $75" }] }],
+  "presets": [{ "name": "Product", "blocks": [
+    { "type": "trust", "settings": { "text": "Free shipping over $75" } },
+    { "type": "trust", "settings": { "text": "30-day easy returns" } },
+    { "type": "trust", "settings": { "text": "100% authentic, brand-name styles" } }] }] }
+{% endschema %}

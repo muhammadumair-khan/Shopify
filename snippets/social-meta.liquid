@@ -1,0 +1,8 @@
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ page_title | escape }}">
+<meta property="og:type" content="{% if template.name == 'product' %}product{% else %}website{% endif %}">
+<meta property="og:description" content="{{ page_description | default: shop.description | escape }}">
+{%- assign og = product.featured_image | default: collection.image | default: settings.favicon -%}
+{% if og %}<meta property="og:image" content="https:{{ og | image_url: width: 1200 }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">

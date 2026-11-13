@@ -1,0 +1,26 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="{{ routes.root_url }}">{{ shop.name }}</a>
+        <p>{{ section.settings.blurb }}</p>
+      </div>
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.title }}</h3>
+          <ul>{% for link in linklists[block.settings.menu].links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}</ul>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="footer__bottom"><span>© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span><span>Prices in {{ cart.currency.iso_code }}</span></div>
+  </div>
+</footer>
+{% schema %}
+{ "name": "Footer",
+  "settings": [{ "type": "textarea", "id": "blurb", "label": "Blurb", "default": "Brand-name style at prices that make sense. New deals dropped every week." }],
+  "blocks": [{ "type": "menu", "name": "Menu", "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Shop" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }] }],
+  "max_blocks": 3,
+  "presets": [{ "name": "Footer", "blocks": [{ "type": "menu" }, { "type": "menu" }] }] }
+{% endschema %}

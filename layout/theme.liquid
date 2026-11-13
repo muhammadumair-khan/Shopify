@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_ink }}">
+  <title>{{ page_title }}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} – {{ shop.name }}{% endunless %}</title>
+  {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% if settings.favicon != blank %}<link rel="icon" href="{{ settings.favicon | image_url: width: 48, height: 48 }}">{% endif %}
+  {%- render 'social-meta' -%}
+  <style>
+    :root {
+      --c-ink: {{ settings.color_ink }};
+      --c-bg: {{ settings.color_bg }};
+      --c-soft: {{ settings.color_soft }};
+      --c-accent: {{ settings.color_accent }};
+      --c-highlight: {{ settings.color_highlight }};
+      --font-body: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+      --font-head: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+      --page-width: {{ settings.page_width }}px;
+    }
+    {{ settings.body_font | font_face: font_display: 'swap' }}
+    {{ settings.heading_font | font_face: font_display: 'swap' }}
+  </style>
+  <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  {{ content_for_header }}
+</head>
+<body class="template-{{ template.name }}">
+  <a class="skip-link" href="#main">{{ 'general.skip' | t }}</a>
+  {% sections 'header-group' %}
+  <main id="main" tabindex="-1">{{ content_for_layout }}</main>
+  {% sections 'footer-group' %}
+</body>
+</html>

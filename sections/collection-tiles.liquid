@@ -1,0 +1,27 @@
+<section class="section">
+  <div class="container">
+    <div class="section__head"><h2>{{ section.settings.title }}</h2></div>
+    <div class="tiles" style="--cols:{{ section.blocks.size | at_most: 4 | at_least: 1 }}">
+      {%- for block in section.blocks -%}
+        {%- assign c = block.settings.collection -%}
+        <a class="tile" href="{{ c.url | default: routes.collections_url }}" {{ block.shopify_attributes }}>
+          {%- assign img = block.settings.image | default: c.image -%}
+          {%- if img %}{{ img | image_url: width: 800 | image_tag: loading: 'lazy' }}{% endif -%}
+          <div class="tile__label"><h3>{{ block.settings.label | default: c.title }}</h3><span>{{ block.settings.tag }}</span></div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Collection tiles",
+  "settings": [{ "type": "text", "id": "title", "label": "Heading", "default": "Shop by category" }],
+  "blocks": [{ "type": "tile", "name": "Tile", "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "label", "label": "Label override" },
+    { "type": "text", "id": "tag", "label": "Tag line", "default": "From $9" },
+    { "type": "image_picker", "id": "image", "label": "Image override" }] }],
+  "max_blocks": 4,
+  "presets": [{ "name": "Collection tiles", "blocks": [
+    { "type": "tile", "settings": { "label": "Men" } }, { "type": "tile", "settings": { "label": "Women" } }, { "type": "tile", "settings": { "label": "Kids" } }] }] }
+{% endschema %}

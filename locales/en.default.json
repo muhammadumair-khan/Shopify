@@ -1,0 +1,34 @@
+{
+  "general": {
+    "skip": "Skip to content",
+    "search": "Search",
+    "cart": "Cart",
+    "menu": "Menu",
+    "off": "{{ percent }}% OFF",
+    "sold_out": "Sold out",
+    "from": "From",
+    "view_all": "Shop all",
+    "continue": "Continue shopping",
+    "not_found": "Page not found",
+    "not_found_text": "This deal has walked out the door. Let's find you another.",
+    "back_home": "Back to deals"
+  },
+  "product": {
+    "add": "Add to cart",
+    "sold_out": "Sold out",
+    "save": "You save {{ amount }}",
+    "size": "Size",
+    "size_guide": "Fit tips: if you're between sizes, size up."
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "note": "Taxes and shipping calculated at checkout.",
+    "remove": "Remove"
+  },
+  "search": { "title": "Search results", "placeholder": "Search jeans, tees, hoodies…", "none": "No results for “{{ terms }}”" },
+  "collection": { "sort": "Sort by", "empty": "No products found." },
+  "newsletter": { "email": "Your email", "subscribe": "Join", "success": "You're in! Check your inbox for your code." }
+}

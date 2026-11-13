@@ -1,0 +1,11 @@
+<div class="container section">
+  <h1>{{ 'search.title' | t }}</h1>
+  <form action="{{ routes.search_url }}" class="news" style="margin:0 0 32px;max-width:none"><div style="display:flex">
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}"><input type="hidden" name="type" value="product"><button class="btn" type="submit">{{ 'general.search' | t }}</button></div></form>
+  {%- paginate search.results by 24 -%}
+    {%- if search.performed and search.results_count == 0 %}<p>{{ 'search.none' | t: terms: search.terms }}</p>{% endif -%}
+    <div class="grid" style="--cols:4">{%- for item in search.results -%}{%- if item.object_type == 'product' -%}{% render 'product-card', product: item %}{%- endif -%}{%- endfor -%}</div>
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endpaginate -%}
+</div>
+{% schema %}{ "name": "Search" }{% endschema %}

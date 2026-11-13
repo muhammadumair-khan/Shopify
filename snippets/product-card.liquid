@@ -1,0 +1,18 @@
+{%- comment -%} Usage: render 'product-card', product: product {%- endcomment -%}
+{%- assign pct = 0 -%}
+{%- if product.compare_at_price > product.price -%}
+  {%- assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+{%- endif -%}
+<a class="card" href="{{ product.url }}">
+  <div class="card__media">
+    {%- if product.available == false %}<span class="badge badge--out">{{ 'general.sold_out' | t }}</span>
+    {%- elsif pct > 0 and settings.show_percent_badge %}<span class="badge">{{ 'general.off' | t: percent: pct }}</span>{% endif -%}
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}" srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w" sizes="(max-width:900px) 50vw, 25vw" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="600" height="800">
+      {%- if product.images.size > 1 %}<img src="{{ product.images[1] | image_url: width: 600 }}" alt="" loading="lazy" width="600" height="800">{% endif -%}
+    {%- else -%}{{ 'product-1' | placeholder_svg_tag }}{%- endif -%}
+  </div>
+  {%- if product.vendor != blank %}<div class="card__vendor">{{ product.vendor }}</div>{% endif -%}
+  <div class="card__title">{{ product.title }}</div>
+  {%- render 'price', product: product -%}
+</a>

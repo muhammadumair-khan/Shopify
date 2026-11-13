@@ -1,0 +1,12 @@
+<div class="container section">
+  <h1>{{ 'general.view_all' | t }}</h1>
+  <div class="tiles" style="--cols:3">
+    {%- for c in collections -%}
+      <a class="tile" href="{{ c.url }}">
+        {%- if c.image %}{{ c.image | image_url: width: 800 | image_tag: loading: 'lazy' }}{% endif -%}
+        <div class="tile__label"><h3>{{ c.title }}</h3><span>{{ c.products_count }} items</span></div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+{% schema %}{ "name": "Collection list" }{% endschema %}

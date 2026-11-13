@@ -1,0 +1,23 @@
+<header class="header">
+  <div class="container header__row">
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav">{{ 'general.menu' | t }}</button>
+    <a class="logo" href="{{ routes.root_url }}">{{ section.settings.logo_a }}<span>{{ section.settings.logo_b }}</span></a>
+    <nav class="nav" id="nav" aria-label="Main">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}"{% if link.title contains 'Sale' or link.title contains 'Deal' %} class="sale"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+    <div class="header__icons">
+      <a href="{{ routes.search_url }}">{{ 'general.search' | t }}</a>
+      <a href="{{ routes.cart_url }}">{{ 'general.cart' | t }}<span class="cart-count">{{ cart.item_count }}</span></a>
+    </div>
+  </div>
+</header>
+{% schema %}
+{ "name": "Header",
+  "settings": [
+    { "type": "text", "id": "logo_a", "label": "Logo – first part", "default": "Deal" },
+    { "type": "text", "id": "logo_b", "label": "Logo – highlighted part", "default": "Fits" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ] }
+{% endschema %}

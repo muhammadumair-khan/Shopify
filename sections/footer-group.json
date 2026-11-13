@@ -1,0 +1,6 @@
+{ "name": "Footer group", "type": "footer",
+  "sections": { "footer": { "type": "footer", "blocks": {
+    "shop": { "type": "menu", "settings": { "title": "Shop", "menu": "main-menu" } },
+    "help": { "type": "menu", "settings": { "title": "Help", "menu": "footer" } } },
+    "block_order": ["shop", "help"] } },
+  "order": ["footer"] }

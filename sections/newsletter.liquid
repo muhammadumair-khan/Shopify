@@ -1,0 +1,21 @@
+<section class="section section--soft">
+  <div class="container news">
+    <h2>{{ section.settings.heading }}</h2>
+    <p>{{ section.settings.text }}</p>
+    {%- form 'customer', id: 'newsletter' -%}
+      {%- if form.posted_successfully? %}<p class="msg">{{ 'newsletter.success' | t }}</p>
+      {%- else -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div style="display:flex;width:100%"><input type="email" name="contact[email]" required placeholder="{{ 'newsletter.email' | t }}" aria-label="{{ 'newsletter.email' | t }}"><button class="btn" type="submit">{{ 'newsletter.subscribe' | t }}</button></div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get 10% off your first order" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Be first to know about flash sales and new drops." }
+  ],
+  "presets": [{ "name": "Newsletter" }] }
+{% endschema %}
