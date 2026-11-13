@@ -92,6 +92,24 @@
     ]
   },
   {
+    "name": "Low stock",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shows \u201cOnly N left\u201d on product cards and product pages using your real Shopify inventory (needs Track quantity turned on for the product)."
+      },
+      {
+        "type": "range",
+        "id": "low_stock_threshold",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "label": "Show when stock is at or below (0 = off)",
+        "default": 5
+      }
+    ]
+  },
+  {
     "name": "Sale countdown",
     "settings": [
       {

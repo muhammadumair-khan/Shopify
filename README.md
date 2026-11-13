@@ -30,7 +30,7 @@ and updates the price, "Inc. VAT" and "You save" amount when a customer picks a 
 
 ## Urgency features (legal in the UK when they are real)
 - **Sale countdown:** Theme settings → Sale countdown. Enter a fixed end date, e.g. `2026-11-30 23:59 +00:00` (UK time; +00:00 in winter, +01:00 in summer). It appears in the announcement bar, in the *Countdown banner* section (add it in the theme editor) and on product pages, and disappears when the sale ends. Every visitor sees the same end time.
-- **Low stock:** product page shows "Only N left in stock" at or below the threshold you choose (Product section settings). It reads your real Shopify inventory, so turn on **Track quantity** for your products.
+- **Low stock:** set one threshold in Theme settings → Low stock (0 = off). Product cards on the home and collection pages show an "Only N left" badge (total stock across sizes), the product page shows "Only N left in stock" for the chosen size, and size buttons show "2 left" for sizes running low. It reads your real Shopify inventory, so turn on **Track quantity** for your products. Products that allow overselling or don't track stock never show it.
 - **Dispatch cut-off:** optional "Order within 3 hrs 12 mins for same-day dispatch" (Mon–Fri, UK time). Enable only if you truly dispatch same day.
 - Do not use timers that reset per visitor, fake "X people viewing" or invented stock levels. The DMCC Act 2024 and CMA treat these as unfair practices. Do not run a "sale ends" countdown and then repeat the same price.
 

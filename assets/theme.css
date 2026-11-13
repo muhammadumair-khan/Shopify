@@ -179,3 +179,8 @@ img{content-visibility:auto}
 .lowstock::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c-accent);margin-right:8px}
 .cutoff{margin:14px 0 0;font-weight:700;font-size:.9rem;border:2px dashed var(--c-ink);padding:8px 12px}
 @media(max-width:520px){.announce .cd{display:flex;justify-content:center;margin:6px 0 0}}
+
+.badge--stock{top:auto;bottom:10px;left:10px;background:var(--c-ink);color:#fff;text-transform:none;font-size:.78rem}
+.badge--stock::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c-accent);margin-right:6px}
+.opt__stock{display:block;font-size:.68rem;font-weight:800;color:var(--c-accent)}
+.opt input:checked+label .opt__stock{color:var(--c-highlight)}

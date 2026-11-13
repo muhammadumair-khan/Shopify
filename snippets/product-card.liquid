@@ -1,6 +1,8 @@
 {%- comment -%} Usage: render 'product-card', product: product {%- endcomment -%}
-{%- assign pct = 0 -%}{%- assign min_pct = 100 -%}{%- assign discounted = 0 -%}
+{%- assign pct = 0 -%}{%- assign min_pct = 100 -%}{%- assign discounted = 0 -%}{%- assign total_qty = 0 -%}{%- assign all_tracked = true -%}
 {%- for v in product.variants -%}
+  {%- if v.inventory_management == 'shopify' and v.inventory_quantity > 0 -%}{%- assign total_qty = total_qty | plus: v.inventory_quantity -%}
+  {%- elsif v.available -%}{%- assign all_tracked = false -%}{%- endif -%}
   {%- if v.compare_at_price > v.price -%}
     {%- assign vp = v.compare_at_price | minus: v.price | times: 100 | divided_by: v.compare_at_price -%}
     {%- assign discounted = discounted | plus: 1 -%}
@@ -12,6 +14,7 @@
   <div class="card__media">
     {%- if product.available == false %}<span class="badge badge--out">{{ 'general.sold_out' | t }}</span>
     {%- elsif pct > 0 and settings.show_percent_badge %}<span class="badge">{% if min_pct != pct or discounted < product.variants.size %}{{ 'general.up_to' | t }} {% endif %}{{ 'general.off' | t: percent: pct }}</span>{% endif -%}
+    {%- if product.available and all_tracked and total_qty > 0 and total_qty <= settings.low_stock_threshold %}<span class="badge badge--stock">{% if total_qty == 1 %}Only 1 left{% else %}Only {{ total_qty }} left{% endif %}</span>{% endif -%}
     {%- if product.featured_image -%}
       <img src="{{ product.featured_image | image_url: width: 600 }}" srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w" sizes="(max-width:900px) 50vw, 25vw" alt="{{ product.featured_image.alt | escape }}" loading="lazy" decoding="async" width="600" height="800">
       {%- if product.images.size > 1 %}<img src="{{ product.images[1] | image_url: width: 600 }}" alt="" loading="lazy" decoding="async" width="600" height="800">{% endif -%}
