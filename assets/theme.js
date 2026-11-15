@@ -135,6 +135,13 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeQa(); });
   // ---- End quick add
 
+  // ---- Reviews: "Show all" button
+  var moreBtn = document.querySelector('[data-rev-more-btn]');
+  if (moreBtn) moreBtn.addEventListener('click', function () {
+    document.querySelectorAll('[data-rev-more]').forEach(function (li) { li.hidden = false; });
+    moreBtn.hidden = true;
+  });
+
   // ---- Product gallery: swipe (scroll-snap), arrows, thumbnails, tap-to-zoom, jump to variant photo
   var galApi = null, gal = document.querySelector('[data-gallery]');
   if (gal) {

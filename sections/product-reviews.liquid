@@ -1,0 +1,15 @@
+{%- if settings.show_reviews -%}
+<section class="section section--soft" id="reviews">
+  <div class="container reviews">
+    <h2>{{ section.settings.title }}</h2>
+    {%- render 'reviews', mode: 'full' -%}
+    {%- for block in section.blocks -%}{%- if block.type == '@app' -%}{% render block %}{%- endif -%}{%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "Reviews",
+  "settings": [{ "type": "text", "id": "title", "label": "Heading", "default": "Customer reviews" }],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Reviews" }] }
+{% endschema %}

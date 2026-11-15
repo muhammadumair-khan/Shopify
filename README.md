@@ -33,6 +33,30 @@ a legal line in the footer, and fully editable homepage sections.
 - **Google rich results:** product data (price, stock, ratings if a reviews app provides them) is added automatically.
 - **Reviews:** install a reviews app (e.g. Judge.me); it plugs into the star-rating and structured data slots.
 
+## Reviews
+Stars with the average and review count show **under the product title** (tap to jump down), and a **Customer reviews** section sits below the product with a rating breakdown, a "true to size" percentage, the review list (first 5, then "Show all") and a "Write a review" form.
+
+**One-time setup in Shopify admin** (Settings → Custom data → Metaobjects → Add definition). Name it **Review**, make sure its type/handle is `review`, and add these fields (the *keys* must match exactly):
+
+| Field name | Key | Type |
+|---|---|---|
+| Product | `product` | Product (reference) |
+| Rating | `rating` | Integer, minimum 1, maximum 5 |
+| Headline | `title` | Single line text |
+| Review | `body` | Multi-line text |
+| Name | `author` | Single line text |
+| Date | `date` | Date |
+| Verified purchase | `verified` | True or false |
+| Fit (optional) | `fit` | Single line text (Runs small / True to size / Runs large) |
+
+In the definition's **Access** settings turn on **Storefront** access, so the theme can read the entries. Then add reviews in **Content → Metaobjects → Review → Add entry**, choose the product, set the status to **Active**, and they appear on that product page.
+
+**How customers send reviews:** the "Write a review" form emails you (through the store's contact form, so it needs your store email set). Nothing goes live until you add it as a Review entry. Tick *Verified purchase* only if you've checked the order number.
+
+**Use a reviews app instead?** Install Judge.me, Loox, Okendo or similar and add its block in the theme editor (Product page → *Reviews* or *Apps* section → Add block). If the app stores its star rating in Shopify's standard `reviews.rating` field, the stars under the title will show it automatically. Then you can hide the built-in form in Theme settings → Reviews.
+
+**UK rules for reviews (DMCC Act 2024, CMA guidance):** only publish real reviews from real customers. Never write your own, pay or reward for positive ones without saying so, or hide or delete negative ones because they're negative. Say if reviews are moderated (the form already does). Don't mark a review "Verified purchase" unless you've checked it.
+
 ## Eye-catching home page and product cards
 - **Hero slider** (theme editor → Hero slider): up to 5 slides, each with a photo *or* a short silent video, heading, text, button and sticker. Slides swipe on phones, change automatically every few seconds (set 0 to stop), pause when touched, and the video plays only while its slide shows. Use bright, high-quality photos about 1400 px wide; the first slide loads first, so keep it light.
 - **Scrolling strip** (Scrolling strip section): moving offers such as "Free delivery over £50". Choose red, black or yellow; it pauses on hover and stays still for people who prefer reduced motion.

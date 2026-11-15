@@ -1,0 +1,132 @@
+{%- comment -%}
+  Usage: render 'reviews', mode: 'summary'   (stars under the title)
+         render 'reviews', mode: 'full'      (rating box, list, write-a-review form)
+  Reviews = Review metaobject entries linked to this product; falls back to the star rating that a reviews app stores in product.metafields.reviews.
+{%- endcomment -%}
+{%- assign count = 0 -%}{%- assign sum = 0 -%}
+{%- assign c1 = 0 -%}{%- assign c2 = 0 -%}{%- assign c3 = 0 -%}{%- assign c4 = 0 -%}{%- assign c5 = 0 -%}
+{%- assign fit_n = 0 -%}{%- assign fit_true = 0 -%}
+{%- assign all_reviews = shop.metaobjects.review.values | reverse -%}
+{%- for r in all_reviews -%}
+  {%- if r.product.value.id == product.id -%}
+    {%- assign rt = r.rating.value | plus: 0 -%}
+    {%- if rt >= 1 and rt <= 5 -%}
+      {%- assign count = count | plus: 1 -%}{%- assign sum = sum | plus: rt -%}
+      {%- case rt -%}
+        {%- when 1 -%}{%- assign c1 = c1 | plus: 1 -%}
+        {%- when 2 -%}{%- assign c2 = c2 | plus: 1 -%}
+        {%- when 3 -%}{%- assign c3 = c3 | plus: 1 -%}
+        {%- when 4 -%}{%- assign c4 = c4 | plus: 1 -%}
+        {%- when 5 -%}{%- assign c5 = c5 | plus: 1 -%}
+      {%- endcase -%}
+      {%- assign fit_l = r.fit.value | downcase -%}
+      {%- if fit_l != blank -%}
+        {%- assign fit_n = fit_n | plus: 1 -%}
+        {%- if fit_l contains 'true' -%}{%- assign fit_true = fit_true | plus: 1 -%}{%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign avg = 0 -%}{%- assign from_app = false -%}
+{%- if count > 0 -%}
+  {%- assign avg = sum | times: 1.0 | divided_by: count | round: 1 -%}
+{%- elsif product.metafields.reviews.rating.value != blank -%}
+  {%- assign avg = product.metafields.reviews.rating.value.rating | plus: 0 | round: 1 -%}
+  {%- assign count = product.metafields.reviews.rating_count.value | plus: 0 -%}
+  {%- assign from_app = true -%}
+{%- endif -%}
+{%- assign avg_pct = avg | times: 20 -%}
+
+{%- if mode == 'summary' -%}
+  {%- if count > 0 -%}
+    <a class="rev-sum" href="#reviews">
+      <span class="stars" style="--p:{{ avg_pct }}%" aria-hidden="true">★★★★★</span>
+      <span class="rev-sum__txt"><b>{{ avg }}</b> <span class="rev-sum__n">({{ count }} review{% if count != 1 %}s{% endif %})</span></span>
+      <span class="sr-only">Rated {{ avg }} out of 5 from {{ count }} reviews</span>
+    </a>
+  {%- elsif settings.allow_review_form -%}
+    <a class="rev-sum rev-sum--none" href="#reviews"><span class="stars" style="--p:0%" aria-hidden="true">★★★★★</span><span class="rev-sum__txt">Be the first to review</span></a>
+  {%- endif -%}
+{%- else -%}
+  <div class="rev" id="reviews-inner">
+    {%- if count > 0 -%}
+      <div class="rev__top">
+        <div class="rev__score">
+          <div class="rev__avg">{{ avg }}</div>
+          <span class="stars stars--lg" style="--p:{{ avg_pct }}%" aria-hidden="true">★★★★★</span>
+          <div class="rev__count">{{ count }} review{% if count != 1 %}s{% endif %}</div>
+        </div>
+        {%- unless from_app -%}
+        <ul class="rev__bars" aria-label="Rating breakdown">
+          {%- for n in (1..5) reversed -%}
+            {%- case n -%}{%- when 5 -%}{%- assign cn = c5 -%}{%- when 4 -%}{%- assign cn = c4 -%}{%- when 3 -%}{%- assign cn = c3 -%}{%- when 2 -%}{%- assign cn = c2 -%}{%- else -%}{%- assign cn = c1 -%}{%- endcase -%}
+            <li><span class="rev__n">{{ n }} ★</span><span class="rev__bar"><i style="width:{{ cn | times: 100 | divided_by: count }}%"></i></span><span class="rev__c">{{ cn }}</span></li>
+          {%- endfor -%}
+        </ul>
+        {%- endunless -%}
+      </div>
+      {%- if fit_n >= 3 -%}<p class="rev__fit"><b>{{ fit_true | times: 100 | divided_by: fit_n }}%</b> of reviewers say this item is true to size.</p>{%- endif -%}
+    {%- endif -%}
+
+    {%- unless from_app -%}
+      <ul class="rev__list">
+        {%- assign shown = 0 -%}
+        {%- for r in all_reviews -%}
+          {%- if r.product.value.id == product.id -%}
+            {%- assign rt = r.rating.value | plus: 0 -%}
+            {%- if rt >= 1 and rt <= 5 -%}
+              {%- assign shown = shown | plus: 1 -%}
+              <li class="rev__item"{% if shown > 5 %} hidden data-rev-more{% endif %}>
+                <div class="rev__head">
+                  <span class="stars" style="--p:{{ rt | times: 20 }}%" aria-hidden="true">★★★★★</span>
+                  <span class="sr-only">{{ rt }} out of 5</span>
+                  {%- if r.verified.value %}<span class="rev__ver">Verified purchase</span>{% endif -%}
+                </div>
+                {%- if r.title.value != blank %}<h3 class="rev__title">{{ r.title.value }}</h3>{% endif -%}
+                <p class="rev__body">{{ r.body.value | escape | newline_to_br }}</p>
+                <p class="rev__by">{{ r.author.value | default: 'Customer' }}{% if r.date.value != blank %} · {{ r.date.value | date: '%d %b %Y' }}{% endif %}{% if r.fit.value != blank %} · Fit: {{ r.fit.value }}{% endif %}</p>
+              </li>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      {%- if shown > 5 %}<button type="button" class="btn rev__more" data-rev-more-btn>Show all {{ shown }} reviews</button>{% endif -%}
+    {%- endunless -%}
+
+    {%- if count == 0 %}<p class="rev__empty">No reviews yet. Bought this? Tell other shoppers what you think.</p>{% endif -%}
+
+    {%- if settings.allow_review_form -%}
+      <details class="rev__write"{% if count == 0 %} open{% endif %}>
+        <summary class="btn btn--light rev__write-btn">Write a review</summary>
+        {%- form 'contact', id: 'review-form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="notice notice--ok" role="status">Thank you! We check every review before it goes live, so it may take a day or two to appear.</p>
+          {%- else -%}
+            {%- if form.errors -%}<div class="notice notice--err" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+            <input type="hidden" name="contact[Type]" value="Product review">
+            <input type="hidden" name="contact[Product]" value="{{ product.title | escape }}">
+            <fieldset class="rate">
+              <legend>Your rating</legend>
+              {%- for n in (1..5) reversed -%}
+                <input type="radio" name="contact[Rating]" id="rate-{{ n }}" value="{{ n }}" required><label for="rate-{{ n }}" title="{{ n }} star{% if n > 1 %}s{% endif %}"><span class="sr-only">{{ n }} star{% if n > 1 %}s{% endif %}</span>★</label>
+              {%- endfor -%}
+            </fieldset>
+            <div class="field"><label for="rv-fit">How did it fit? (optional)</label>
+              <select id="rv-fit" name="contact[Fit]"><option value="">Not sure</option><option>Runs small</option><option>True to size</option><option>Runs large</option></select></div>
+            <div class="field"><label for="rv-title">Headline</label><input id="rv-title" name="contact[Review title]" maxlength="80"></div>
+            <div class="field"><label for="rv-body">Your review</label><textarea id="rv-body" name="contact[body]" rows="4" required></textarea></div>
+            <div class="field-row">
+              <div class="field"><label for="rv-name">Name</label><input id="rv-name" name="contact[name]" autocomplete="name" required></div>
+              <div class="field"><label for="rv-email">Email (not shown)</label><input id="rv-email" type="email" name="contact[email]" autocomplete="email" required></div>
+            </div>
+            <div class="field"><label for="rv-order">Order number (optional, to mark it verified)</label><input id="rv-order" name="contact[Order number]" placeholder="#1001"></div>
+            <label class="check"><input type="checkbox" name="contact[Honest]" value="yes" required> This is my honest opinion, based on my own experience.</label>
+            <button class="btn" type="submit">Send review</button>
+            <p class="rev__policy">We publish genuine reviews, good or bad, and never pay for them. Reviews are checked first.</p>
+          {%- endif -%}
+        {%- endform -%}
+      </details>
+    {%- endif -%}
+  </div>
+{%- endif -%}

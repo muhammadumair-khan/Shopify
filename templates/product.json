@@ -61,10 +61,21 @@
     },
     "recs": {
       "type": "product-recommendations"
+    },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "title": "Customer reviews"
+      }
+    },
+    "apps": {
+      "type": "apps"
     }
   },
   "order": [
     "main",
+    "reviews",
+    "apps",
     "recs"
   ]
 }

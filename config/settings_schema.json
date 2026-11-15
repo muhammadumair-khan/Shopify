@@ -92,6 +92,28 @@
     ]
   },
   {
+    "name": "Reviews",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Reviews come from Review entries you publish (Content \u2192 Metaobjects \u2192 Review), or from a reviews app's star rating if you install one. See the README for the 2-minute setup."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_reviews",
+        "label": "Show reviews on product pages",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "allow_review_form",
+        "label": "Show \u201cWrite a review\u201d form",
+        "info": "Reviews arrive by email through the contact form. Nothing goes live until you publish it.",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Product cards",
     "settings": [
       {
